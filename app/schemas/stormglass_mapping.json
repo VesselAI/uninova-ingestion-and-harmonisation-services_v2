@@ -1,0 +1,28 @@
+{
+    "data_type": "weather",
+    "type": "webservice",
+    "url": "https://api.stormglass.io/v2/weather/point?lat={}&lng={}&params={}&start={}&end={}",
+    "is_list": "true",
+    "list_path": "hours",
+    "params": ["lat", "lng", "params", "start", "end"],
+    "response_type": "json",
+    "schema":{
+        "provider" : {"type" : "string", "value" : "Stormglass"},
+        "datetime" : {"type" : "timestamp", "path": "time"},
+        "lat" : {"type" : "double", "unit" : "wsg84", "path" : "meta.lat"},
+        "lon" : {"type" : "double", "unit" : "wsg84", "path" : "meta.lng"},
+        "main_temp" : {"type" : "double", "unit" : "degrees_C", "path": "airTemperature.sg"},
+        "main_pressure" : {"type" : "double", "unit" : "hpa", "path": "pressure.sg"},
+        "humidity" : {"type" : "double", "unit" : "percentage", "path": "humidity.sg"},
+        "sea_level" : {"type" : "double", "unit" : "meters", "path": "seaLevel.sg"},
+        "main_visibility" : {"type" : "double", "unit" : "kilometers", "path": "visibility.sg"},
+        "main_wind_speed" : {"type" : "double", "unit" : "meter_second", "path": "windSpeed.sg"},
+        "main_wind_direction" : {"type" : "double", "unit" : "angle_degrees", "path": "windDirection.sg"},
+        "main_wind_gust" : {"type" : "double", "unit" : "meter_second", "path": "gust.sg"},
+        "main_clouds" : {"type" : "double", "unit" : "percentage", "path": "cloudCover.sg"},
+        "main_current_direction" : {"type" : "double", "unit" : "angle_degrees", "path": "currentDirection.sg"},
+        "main_current_speed" : {"type": "double", "unit": "meter_second", "path" : "currentSpeed.sg"},
+        "main_precipitation": {"type": "double", "unit" : "millimiter", "path": "precipitation.sg"},
+        "main_wave_height" : {"type": "double", "unit": "meters", "path": "waveHeight.sg"}
+    }
+}

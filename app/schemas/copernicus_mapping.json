@@ -1,0 +1,20 @@
+{
+    "data_type": "weather",
+    "type": "file",
+    "is_list": "false",
+    "schema":{
+        "provider" : {"type" : "string", "path": "Provider"},
+        "datetime" : {"type" : "timestamp", "path": "time"},
+        "lat" : {"type" : "double", "path" : "latitude"},
+        "lon" : {"type" : "double", "path" : "longitude"},
+        "dewpoint_temperature_2m" : {"type": "double", "unit": "degrees_Kelvin", "path": "t2m"},
+		"neutral_wind_u10": {"type": "double", "unit": "meter_second", "path": "u10"},
+		"neutral_wind_v10": {"type": "double", "unit": "meter_second", "path": "v10"},
+		"main_pressure": {"type": "double", "unit": "pa", "path": "msl"},
+		"mean_wave_direction" : {"type": "double", "unit": "angle_degrees", "path": "mwd"},
+		"mean_wave_period": {"type": "double", "unit": "seconds", "path": "mwp"},
+		"precipitation_type": {"type": "double", "path": "ptype"},
+		"main_temp": {"type": "double", "unit": "degrees_Kelvin", "path": "sst"},
+		"main_precipitation": {"type": "double", "unit": "millimeter", "path": "tp"}
+    }
+}

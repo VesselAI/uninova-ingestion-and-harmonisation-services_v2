@@ -1,0 +1,17 @@
+{
+    "data_type": "ais",
+    "type": "file",
+    "is_list": "false",
+    "schema":{
+        "provider" : {"type" : "string","path": "Provider", "value" : "NCA AIS"},
+        "mmsi":{"type" : "integer", "path": "mmsi"},
+        "status" : {"type" : "integer", "path" : "nav_status"},
+        "speed" : {"type" : "integer", "unit" : "knots", "path": "sog"},
+        "longitude" : {"type" : "double", "path": "lon"},
+        "latitude" : {"type" : "double", "path": "lat"},
+        "course" : {"type" : "integer", "unit" : "degrees", "path": "cog"},
+        "heading" : {"type" : "integer", "unit" : "degrees", "path": "true_heading"},
+        "datetime" : {"type" : "timestamp", "format" : "yyyy-MM-dd HH:mm:ss", "path": "date_time_utc"},
+        "ship_ID" : {"type" : "integer", "path": "imo_nr"}
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "data_type": "weather",
+    "type": "webservice",
+    "url": "https://api.met.no/weatherapi/locationforecast/2.0/complete?altitude={}&lat={}&lon={}",
+    "is_list": "true",
+    "list_path": "properties.timeseries",
+    "params": ["altitude", "lat", "lon"],
+    "response_type": "json",
+    "time_interval": "daily",
+    "schema":{
+        "provider" : {"type" : "string", "value" : "MET NO"},
+        "datetime":{"type" : "timestamp", "path": "time"},
+        "lat": {"type": "geojson", "path": "geometry.coordinates", "index": 1},
+        "lon": {"type": "geojson", "path": "geometry.coordinates", "index": 0},
+        "main_temp" : {"type" : "double", "unit" : "degrees_C", "path": "data.instant.details.air_temperature"},
+        "main_pressure" : {"type" : "double", "unit" : "hpa", "path": "data.instant.details.air_pressure_at_sea_level"},
+        "humidity" : {"type" : "double", "unit" : "percentage", "path": "data.instant.details.relative_humidity"},
+        "main_wind_speed" : {"type" : "double", "unit" : "meter_second", "path": "data.instant.details.wind_speed"},
+        "main_wind_direction" : {"type" : "double", "unit" : "angle_degrees", "path": "data.instant.details.wind_from_direction"},
+        "main_wind_gust" : {"type" : "double", "unit" : "meter_second", "path": "data.instant.details.wind_speed_of_gust"},
+        "main_clouds" : {"type" : "double", "unit" : "percentage", "path": "data.instant.details.cloud_area_fraction"}
+    }
+}

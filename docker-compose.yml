@@ -1,0 +1,77 @@
+version: "2.1"
+services:
+  spark:
+    #image: docker.io/bitnami/spark:3
+    build: ./spark
+    environment:
+      - SPARK_MODE=master
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    ports:
+      - '7077:7077'
+      - '8081:8080'
+
+    volumes:
+      - /opt/bitnami/spark/files:/opt/bitnami/spark/files
+  spark-worker:
+    #image: docker.io/bitnami/spark:3
+    build: ./spark
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark:7077
+      - SPARK_WORKER_MEMORY=2G
+      - SPARK_WORKER_CORES=1
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    ports:
+      - "8082:8081"
+    volumes:
+      - /opt/bitnami/spark/files:/opt/bitnami/spark/files
+    depends_on: 
+      spark: 
+        condition: service_started
+  mongo:
+    image: mongo:4.2
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_DATABASE=uninova
+    ports:
+      - "27018:27017"
+    volumes:
+      - ./mongo/initdb.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+  postgres:
+    image: postgres:12.0
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: grisgris123
+    ports: 
+      - "5434:5432"
+    volumes:
+      - ./postgres/ais_data_backup.sql:/docker-entrypoint-initdb.d/ais_data_backup.sql
+  monetdb:
+    image: monetdb/vessel_ai:latest
+    ports: 
+    - "50000:50000"
+    environment:
+      DB_NAME: vesselai
+      DB_USER: uninova
+      DB_PASSWORD: grisgris123
+    volumes:
+      - database_storage:/var/monetdb5/dbfarm
+      - type: bind
+        source: ./monetdb
+        target: /initdb
+  
+  app:
+    build: ./app
+    ports:
+     - '5002:5002'
+    volumes:
+     - ./app/schemas:/schemas
+volumes:
+  database_storage:
