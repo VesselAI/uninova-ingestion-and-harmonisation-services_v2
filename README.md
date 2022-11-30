@@ -28,6 +28,8 @@ docker-compose up --build
 
 Note: the default database to store the harmonization is an instance of monetdb that is initialized in the docker-compose file, but this can be changed in the config.ini file, under the [JDBCCONFIG] parameters, or using the 'update_config' endpoint, to set a custom database.
 
+--- 
+
 ## Endpoints:
 #### POST /data/update_config
 
@@ -56,9 +58,8 @@ __Parameters:__
     - ais
  - params (required)            - The internal parameters to access the data source, such as Web Services URL or FTP URL, for instance
  - mapping_schema (required)    - The name of the mapping schema for the data source
- - output_db_type               - 
+ - output_db_type               - Type of database to be used to save the harmonised data
 
---- 
 
 __Possible values in "params":__
     - db_schema                 - Schema of the database where the services will store the harmonised data
