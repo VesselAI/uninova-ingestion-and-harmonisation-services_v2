@@ -29,9 +29,11 @@ def dfMapping(harmonization_schema, mapping_schema, df):
     for col in df.columns:
         if not col in mapping_schema['schema'].keys():
             df = df.drop(col)
-    
+    print(df.head(1))
+    print(df.printSchema())
     df = castType(harmonization_schema, mapping_schema, df)
-    print(df.head(2))
+    print("CAST TYPE DONE")
+    print(df.head(1))
     return df
 
 def get_harmo_schema(data_type):
@@ -58,6 +60,8 @@ def get_mapping_schema(map_schema_name):
         f = open(path + "/schemas/copernicus_mapping.json")
     elif map_schema_name == "ais_dk_mapping":
         f = open(path + "/schemas/ais_dk_mapping.json")
+    elif map_schema_name == "brest_mapping":
+        f = open(path + "/schemas/brest_mapping.json")
     mapping_schema = json.load(f)
     return mapping_schema
 

@@ -69,9 +69,12 @@ services:
   
   app:
     build: ./app
+    environment:
+      - PYTHONUNBUFFERED=1
     ports:
      - '5002:5002'
     volumes:
-     - ./app/schemas:/schemas
+     - ./app:/app
+     - /opt/bitnami/spark/files:/opt/bitnami/spark/files
 volumes:
   database_storage:

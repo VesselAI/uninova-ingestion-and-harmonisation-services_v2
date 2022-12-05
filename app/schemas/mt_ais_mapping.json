@@ -6,12 +6,11 @@
         "provider" : {"type" : "string","path": "Provider", "value" : "MT AIS"},
         "mmsi":{"type" : "integer", "path": "MMSI"},
         "status" : {"type" : "integer", "path" : "STATUS"},
-        "speed" : {"type" : "integer", "unit" : "knots", "path": "SPEED"},
-        "longitude" : {"type" : "double", "path": "LON"},
-        "latitude" : {"type" : "double", "path": "LAT"},
-        "course" : {"type" : "integer", "unit" : "degrees", "path": "COURSE"},
+        "sog" : {"type" : "integer", "unit" : "knots", "path": "SPEED"},
+        "lon" : {"type" : "double", "path": "LON"},
+        "lat" : {"type" : "double", "path": "LAT"},
+        "cog" : {"type" : "integer", "unit" : "degrees", "path": "COURSE"},
         "heading" : {"type" : "integer", "unit" : "degrees", "path": "HEADING"},
-        "datetime" : {"type" : "timestamp", "format" : "yyyy-MM-dd HH:mm:ss", "path": "TIMESTAMP"},
-        "ship_ID" : {"type" : "integer", "path": "SHIP_ID"}
+        "datetime" : {"type" : "timestamp", "format" : "yyyy-MM-dd HH:mm:ss", "path": "TIMESTAMP"}
     }
 }

@@ -1,5 +1,6 @@
-from pyspark.sql.functions import col
-from pyspark.sql.functions import to_timestamp
+from pyspark.sql.functions import regexp_replace, col
+from pyspark.sql.functions import to_timestamp, from_unixtime
+import datetime as dt
 
 
 def castType(harmonization_schema, mapping_schema, df):
@@ -11,10 +12,15 @@ def castType(harmonization_schema, mapping_schema, df):
                 elif harmonization_schema[key]['type']=="integer":
                     df = df.withColumn(key, col(key).cast('integer'))
                 elif harmonization_schema[key]['type']=="timestamp":
-                    df = df.withColumn(key, to_timestamp(col(key), mapping_schema['schema'][key]['format']))
+                    if mapping_schema['schema'][key]['type'] == "utc_unix":
+                        df = df.withColumn(key, col(key).cast('integer'))
+                        df = df.withColumn(key, from_unixtime(col(key), mapping_schema['schema'][key]['format']))
+                    elif mapping_schema['schema'][key]['type'] == "timestamp":
+                        df = df.withColumn(key,regexp_replace(col(key), "T", " "))
+                        df = df.withColumn(key, to_timestamp(col(key), mapping_schema['schema'][key]['format']))
                 elif harmonization_schema[key]['type']=="double":
                     df = df.withColumn(key, col(key).cast('double'))
-                else: None 
+
     
     return df
 

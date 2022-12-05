@@ -136,13 +136,20 @@ def ingestBatchEndpoint():
             return make_response('Error: Missing "params" parameter', 404)
         if 'mapping_schema' in data:
             mapping_schema = data['mapping_schema']
+        else:
+            return make_response('Error: Missing "mapping_schema" parameter', 404)
+        # if 'db_table' in params:
+        #     db_table = params['db_table']
+        # else:
+        #     return make_response('Error: Missing "db_table" parameter', 404)
+        # if 'db_schema' in params:
+        #     db_schema = params['db_schema']
+        # else:
+        #     return make_response('Error: Missing "db_schema" parameter', 404)
         
         spark = initSpark()
-
-        if data_type == "weather":
-            dbtable = "weather_data_harmonized"  
-        elif data_type == "ais":
-            dbtable = "ais_data_harmonized"
+        db_table = params['db_table']
+        db_schema = params['db_schema']
         
         db_type = data["output_db_type"]
         if db_type == "jdbc":
@@ -151,15 +158,24 @@ def ingestBatchEndpoint():
                 "url": __jdbc_url,
                 "port" : __jdbc_port,
                 "db" : __jdbc_db,
-                "dbtable" : dbtable,
+                "dbtable" : db_table,
                 "user": __jdbc_user,
                 "password" : __jdbc_pass,
                 "driver" : __jdbc_driver
-            }  
+            }
+            myhost = __jdbc_url.replace("monetdb://", "")
+            conn = pymonetdb.connect(username=__jdbc_user, password=__jdbc_pass, hostname=myhost, database=__jdbc_db)
+            cursor = conn.cursor()
+            cursor.execute("CREATE SCHEMA IF NOT EXISTS " + str(db_schema))
+            cursor.execute("SET SCHEMA " + str(db_schema))
+            #cursor.execute("SET ROLE writer")
             storeToJDBC(df, dbparams)
+            conn.commit()
+            cursor.close()
+            conn.close()
         elif db_type == "mongo":
             df = ingestBatchTask(spark, type, data_type, params, mapping_schema)
-            storeToMongo(df, dbtable)
+            storeToMongo(df, db_table)
             
         return make_response('Success', 200)
     return make_response('Error: Request parameters are not in JSON format', 404) 

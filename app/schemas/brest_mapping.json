@@ -1,0 +1,16 @@
+{
+    "data_type": "ais",
+    "type": "file",
+    "is_list": "false",
+    "schema":{
+        "provider" : {"type" : "string","path": "Provider"},
+        "mmsi":{"type" : "integer", "path": "sourcemmsi"},
+        "status":{"type": "integer", "path": "navigationalstatus"},
+        "sog" : {"type" : "integer", "unit" : "knots", "path": "speedoverground"},
+        "lon" : {"type" : "double", "path": "lon"},
+        "lat" : {"type" : "double", "path": "lat"},
+        "cog" : {"type" : "integer", "unit" : "degrees", "path": "courseoverground"},
+        "heading" : {"type" : "integer", "unit" : "degrees", "path": "trueheading"},
+        "datetime" : {"type" : "utc_unix", "format" : "yyyy-MM-dd HH:mm:ss", "path": "t"}
+    }
+}
