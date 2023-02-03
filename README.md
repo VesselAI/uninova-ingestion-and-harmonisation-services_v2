@@ -88,3 +88,30 @@ __Possible values in "params":__
     - file-type (required)      - The type of file - json(JSON) or csv(CSV)
     - provider (required)       - The name of the file's provider
     - delimiter (optional)      - The file's delimiter character, in case of file-type = csv
+#### POST /data/ingest_stream
+
+Currently this service collects raw data from a kafka topic, harmonizes it, stores it in a mongo db table and sends the harmonized data to a new kafka topic.
+
+__Parameters:__
+ - name                         - Name you want to give this task
+ - task
+    - harmonize                 - Currently only supports harmonization
+ - type (required)              - The data source/mechanism type
+    - file                      - file is the only supported type at the moment
+ - data-type (required)         - The type of data to be ingested (Weather, AIS)
+    - weather
+    - ais
+ - mapping_schema (required)    - The name of the mapping schema for the data source
+    - brest_mapping
+    - mt_ais_mapping
+    - etc.
+ - output_db_type               - Type of database to be used to save the harmonised data
+    - mongo                        - Currently only supports mongo
+ - params (required)            - The internal parameters to access the data source, such as kafka address or topic name
+
+__Possible values in "params":__
+    - provider                 - Schema of the database where the services will store the harmonised data
+    - db_table                 - Table where the user wants to save the harmonised data on the database
+    - broker                   - Address of the kafka broker. Uninova server:'kafka.bectr.grisenergia.pt:35066'
+    - input_topic              - Name of the topic where raw data is going. Default: 'AIS_raw'
+    - output_topic             - Name of the topic where the harmonized data will be sent 'AIS_harmonized'
