@@ -7,6 +7,8 @@ from utils.general_utils import clearSpaces
 from functions.harmonization import dfMapping, harmonizationTask, get_mapping_schema, preProcessJSON, get_harmo_schema
 from utils.conversion_utils import convertUnits
 from pyspark import SparkFiles, SparkContext
+from kafka import KafkaConsumer, TopicPartition, KafkaProducer
+import ast
 
 def ingestBatchTask(spark, type, data_type, params, mapping_schema_file):
     # TODO: Use Spark read to ingest different types of data
@@ -73,6 +75,52 @@ def ingestBatchTask(spark, type, data_type, params, mapping_schema_file):
             return df
     return None
 
+
+def ingestStreamTask(spark, type, data_type, params, mapping_schema_file):
+    sc = spark.sparkContext
+    if type != '':
+        harmo_schema = get_harmo_schema(data_type)
+        mapping_schema = get_mapping_schema(mapping_schema_file)
+        input_topic = params['input_topic']
+        #create kafka consumer
+        broker = params['broker']
+        consumer = KafkaConsumer(bootstrap_servers=broker,
+                                value_deserializer=lambda v: json.loads(v.decode('utf-8')),
+                                auto_offset_reset='earliest',
+                                enable_auto_commit=True,session_timeout_ms=15000,max_poll_interval_ms=3000)
+        
+        # assign consumer to beggining of topic
+        tp = TopicPartition(input_topic,0)
+        consumer.assign([tp])
+        consumer.seek_to_end(tp)
+        lastOffset = consumer.position(tp)
+        consumer.seek_to_beginning(tp) 
+
+        data = []
+        for message in consumer:
+            data.append(json.loads(message.value))
+            print(message.value)
+
+            if message.offset == lastOffset - 1:
+                break
+        
+        consumer.close()
+        #write data to json file
+        jsonString = json.dumps(data)
+        jsonFile = open("data.json", "w")
+        jsonFile.write(jsonString)
+        jsonFile.close()
+
+        # data to spark df, clear spaces and harmonization
+        df = spark.read.json("data.json")
+        df = clearSpaces(df)
+        df = dfMapping(harmo_schema, mapping_schema, df)
+        df = harmonizationTask(df, spark, harmo_schema)
+        
+
+        return df
+
+    return None
 
 def executeRestApi(verb, url, headers, body):
   #

@@ -27,5 +27,6 @@ RUN \
     --output /opt/bitnami/spark/jars/postgresql-42.3.0.jar && \
   curl https://www.monetdb.org/downloads/Java/monetdb-jdbc-3.2.jre8.jar \
     --output /opt/bitnami/spark/jars/monetdb-jdbc-3.2.jre8.jar
+    
 
 ENTRYPOINT ["python", "main.py"]

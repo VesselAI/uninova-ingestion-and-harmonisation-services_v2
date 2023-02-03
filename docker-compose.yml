@@ -55,19 +55,19 @@ services:
       - "5434:5432"
     volumes:
       - ./postgres/ais_data_backup.sql:/docker-entrypoint-initdb.d/ais_data_backup.sql
-  monetdb:
-    image: monetdb/vessel_ai:latest
-    ports: 
-    - "50000:50000"
-    environment:
-      DB_NAME: vesselai
-      DB_USER: uninova
-      DB_PASSWORD: grisgris123
-    volumes:
-      - database_storage:/var/monetdb5/dbfarm
-      - type: bind
-        source: ./monetdb
-        target: /initdb
+  # monetdb:
+  #   image: monetdb/vessel_ai:latest
+  #   ports: 
+  #   - "50000:50000"
+  #   environment:
+  #     DB_NAME: vesselai
+  #     DB_USER: uninova
+  #     DB_PASSWORD: grisgris123
+  #   volumes:
+  #     - database_storage:/var/monetdb5/dbfarm
+  #     - type: bind
+  #       source: ./monetdb
+  #       target: /initdb
   
   app:
     build: ./app

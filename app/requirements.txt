@@ -4,3 +4,4 @@ pyspark==3.2.1
 python_crontab==2.6.0
 requests==2.27.1
 pymonetdb==1.5.1
+kafka-python

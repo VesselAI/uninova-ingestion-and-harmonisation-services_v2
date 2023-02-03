@@ -2,12 +2,12 @@
 from crypt import methods
 from __init__ import createApp
 from flask import make_response, request
-from functions.ingestion import ingestBatchTask
+from functions.ingestion import ingestBatchTask, ingestStreamTask
 from utils.spark_utils import initSpark
 from utils.conversion_utils import castType
 from utils.general_utils import startCronJob, removeAllCronjob
 import json, os
-from functions.storage import storeToJDBC, storeToMongo
+from functions.storage import storeToJDBC, storeToMongo , sendToKafka
 from configparser import ConfigParser
 import subprocess
 import pymonetdb
@@ -146,10 +146,10 @@ def ingestBatchEndpoint():
         #     db_schema = params['db_schema']
         # else:
         #     return make_response('Error: Missing "db_schema" parameter', 404)
-        
+
         spark = initSpark()
         db_table = params['db_table']
-        db_schema = params['db_schema']
+        #db_schema = params['db_schema']
         
         db_type = data["output_db_type"]
         if db_type == "jdbc":
@@ -163,16 +163,18 @@ def ingestBatchEndpoint():
                 "password" : __jdbc_pass,
                 "driver" : __jdbc_driver
             }
-            myhost = __jdbc_url.replace("monetdb://", "")
-            conn = pymonetdb.connect(username=__jdbc_user, password=__jdbc_pass, hostname=myhost, database=__jdbc_db)
-            cursor = conn.cursor()
-            cursor.execute("CREATE SCHEMA IF NOT EXISTS " + str(db_schema))
-            cursor.execute("SET SCHEMA " + str(db_schema))
-            #cursor.execute("SET ROLE writer")
+            
+            print(dbparams)
+            #myhost = __jdbc_url.replace("monetdb://", "")
+            # conn = pymonetdb.connect(username=__jdbc_user, password=__jdbc_pass, hostname=myhost, database=__jdbc_db)
+            # cursor = conn.cursor()
+            # cursor.execute("CREATE SCHEMA IF NOT EXISTS " + str(db_schema))
+            # cursor.execute("SET SCHEMA " + str(db_schema))
+            # cursor.execute("SET ROLE writer")
             storeToJDBC(df, dbparams)
-            conn.commit()
-            cursor.close()
-            conn.close()
+            # conn.commit()
+            # cursor.close()
+            # conn.close()
         elif db_type == "mongo":
             df = ingestBatchTask(spark, type, data_type, params, mapping_schema)
             storeToMongo(df, db_table)
@@ -230,6 +232,9 @@ request data - JSON
 @app.route("/data/ingest_stream", methods=["POST"])
 def ingestStreamEndpoint():
     if request.is_json:
+        #os.remove('data.json')
+        if os.path.exists('data.json'):
+            os.remove('data.json')
         data = request.get_json()
         name = ''
         task = ''
@@ -250,17 +255,62 @@ def ingestStreamEndpoint():
             type = data['type']
         else:
             return make_response('Error: Missing "type" parameter', 404)
+        if 'data_type' in data:
+            data_type = data['data_type']
+        else:
+            return make_response('Error: Missing "data_type" parameter', 404)
         if 'params' in data:
             params = data['params']
         else:
             return make_response('Error: Missing "params" parameter', 404)
-        if 'mapping_schema' in data & task == 'harmonize':
-            mapping_schema = data['mapping_schema']
-        
-        #TODO: ingestStream function
+        if 'mapping_schema' in data:
+            if task == 'harmonize':
+                mapping_schema = data['mapping_schema']
+        else:
+            return make_response('Error: Missing "mapping_schema" parameter', 404)
 
+        spark = initSpark()
+        db_table = params['db_table']
+        broker = params['broker']
+        
+        output_topic = params['output_topic']
+        db_type = data["output_db_type"]
+        # if db_type == 'jdbc':
+        #     db_schema = params['db_schema']
+        
+        
+        if db_type == "jdbc":
+            df = ingestStreamTask(spark, type, data_type, params, mapping_schema)
+            dbparams={
+                "url": __jdbc_url,
+                "port" : __jdbc_port,
+                "db" : __jdbc_db,
+                "dbtable" : db_table,
+                "user": __jdbc_user,
+                "password" : __jdbc_pass,
+                "driver" : __jdbc_driver
+            }
+            # myhost = __jdbc_url.replace("monetdb://", "")
+            # conn = pymonetdb.connect(username=__jdbc_user, password=__jdbc_pass, hostname=myhost, database=__jdbc_db)
+            # cursor = conn.cursor()
+            # cursor.execute("CREATE SCHEMA IF NOT EXISTS " + str(db_schema))
+            # cursor.execute("SET SCHEMA " + str(db_schema))
+            #cursor.execute("SET ROLE writer")
+            storeToJDBC(df, dbparams)
+            # conn.commit()
+            # cursor.close()
+            # conn.close()
+        elif db_type == "mongo":
+            df = ingestStreamTask(spark, type, data_type, params, mapping_schema)
+            storeToMongo(df, db_table)
+            #topic= '26jantest_harmo'
+            #broker = 'kafka.bectr.grisenergia.pt:35066'
+            sendToKafka(df,broker,output_topic)
+            
         return make_response('Success', 200)
-    return make_response('Error: Request parameters are not in JSON format', 404)    
+    return make_response('Error: Request parameters are not in JSON format', 404) 
+        
+
 
 
 
