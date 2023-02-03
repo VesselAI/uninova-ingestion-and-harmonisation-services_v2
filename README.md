@@ -110,8 +110,8 @@ __Parameters:__
  - params (required)            - The internal parameters to access the data source, such as kafka address or topic name
 
 __Possible values in "params":__
-    - provider                 - Schema of the database where the services will store the harmonised data
-    - db_table                 - Table where the user wants to save the harmonised data on the database
-    - broker                   - Address of the kafka broker. Uninova server:'kafka.bectr.grisenergia.pt:35066'
-    - input_topic              - Name of the topic where raw data is going. Default: 'AIS_raw'
-    - output_topic             - Name of the topic where the harmonized data will be sent 'AIS_harmonized'
+   - provider                 - Schema of the database where the services will store the harmonised data
+   - db_table                 - Table where the user wants to save the harmonised data on the database
+   - broker                   - Address of the kafka broker. Uninova server:'kafka.bectr.grisenergia.pt:35066'
+   - input_topic              - Name of the topic where raw data is going. Default: 'AIS_raw'
+   - output_topic             - Name of the topic where the harmonized data will be sent 'AIS_harmonized'
