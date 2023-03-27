@@ -1,0 +1,15 @@
+{
+    "data_type": "ais",
+    "type": "file",
+    "is_list": "false",
+    "schema":{
+        "provider" : {"type" : "string","path": "Provider"},
+        "datetime" : {"type" : "timestamp", "format" : "yyyy-MM-dd HH:mm:ss",  "path": "datetime"},
+        "ship_id" : {"type" : "integer", "path": "ship_id"},
+        "lon" : {"type" : "double", "path": "lon"},
+        "lat" : {"type" : "double", "path": "lat"},
+        "heading" : {"type" : "integer", "unit" : "degrees", "path": "heading"},
+        "sog" : {"type" : "integer", "unit" : "knots", "path": "sog"},
+        "cog" : {"type" : "integer", "unit" : "degrees", "path": "cog"}
+    }
+}

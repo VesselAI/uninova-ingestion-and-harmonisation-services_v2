@@ -1,0 +1,18 @@
+{
+    "data_type": "ais",
+    "type": "database",
+    "is_list": "false",
+    "schema":{
+        "provider" : {"type" : "string","path": "Provider"},
+        "mmsi":{"type" : "integer", "path": "mmsi"},
+        "imo":{"type" : "string", "path": "imo"},
+        "length" : {"type" : "double", "path": "lenght"},
+        "datetime" : {"type" : "timestamp", "format" : "yyyy-MM-dd HH:mm:ss",  "path": "datetime"},
+        "lon" : {"type" : "double", "path": "lon"},
+        "lat" : {"type" : "double", "path": "lat"},
+        "sog" : {"type" : "integer", "unit" : "knots", "path": "sog"},
+        "cog" : {"type" : "integer", "unit" : "degrees", "path": "cog"},
+        "heading" : {"type" : "integer", "unit" : "degrees", "path": "heading"},
+        "status" : {"type" : "int", "path": "status"}
+    }
+}

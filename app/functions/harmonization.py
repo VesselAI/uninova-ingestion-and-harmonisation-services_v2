@@ -42,29 +42,31 @@ def get_harmo_schema(data_type):
         f = open(path + "/schemas/weather_harmonization_schema.json")    
     elif data_type == 'ais':
         f = open(path + "/schemas/ais_harmonization_schema.json")
+    elif data_type == 'noon_reports':
+        f = open(path + "/schemas/noon_reports_harmonization_schema.json")
         
     harmonization_schema = json.load(f)
     return harmonization_schema
 
 def get_mapping_schema(map_schema_name):
-    if map_schema_name == "OpenWeatherMap":
-        f = open(path + "/schemas/openweathermap_mapping.json")
-    elif map_schema_name == "met_no_mapping":
-        f = open(path + "/schemas/met_no_mapping.json")
-    elif map_schema_name == "mt_ais_mapping":
-        f = open(path + "/schemas/mt_ais_mapping.json")
-    elif map_schema_name == "nca_ais_mapping":
-        f = open(path + "/schemas/nca_ais_mapping.json")
-    elif map_schema_name == "stormglass_mapping":
-        f = open(path + "/schemas/stormglass_mapping.json")
-    elif map_schema_name == "copernicus_mapping":
-        f = open(path + "/schemas/copernicus_mapping.json")
-    elif map_schema_name == "ais_dk_mapping":
-        f = open(path + "/schemas/ais_dk_mapping.json")
-    elif map_schema_name == "brest_mapping":
-        f = open(path + "/schemas/brest_mapping.json")
-    elif map_schema_name == "infore_mapping":
-        f = open(path + "/schemas/infore_ais_mapping.json")
+    # if map_schema_name == "OpenWeatherMap":
+    #     f = open(path + "/schemas/openweathermap_mapping.json")
+    # elif map_schema_name == "met_no_mapping":
+    #     f = open(path + "/schemas/met_no_mapping.json")
+    # elif map_schema_name == "mt_ais_mapping":
+    #     f = open(path + "/schemas/mt_ais_mapping.json")
+    # elif map_schema_name == "nca_ais_mapping":
+    #     f = open(path + "/schemas/nca_ais_mapping.json")
+    # elif map_schema_name == "stormglass_mapping":
+    #     f = open(path + "/schemas/stormglass_mapping.json")
+    # elif map_schema_name == "copernicus_mapping":
+    #     f = open(path + "/schemas/copernicus_mapping.json")
+    # elif map_schema_name == "ais_dk_mapping":
+    #     f = open(path + "/schemas/ais_dk_mapping.json")
+    # elif map_schema_name == "brest_mapping":
+    #     f = open(path + "/schemas/brest_mapping.json")
+    # elif map_schema_name == "infore_mapping":
+    f = open(path + "/schemas/" + map_schema_name + ".json")
     mapping_schema = json.load(f)
     return mapping_schema
 

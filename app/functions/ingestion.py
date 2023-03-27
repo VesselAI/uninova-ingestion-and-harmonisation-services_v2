@@ -3,7 +3,7 @@ from flask import request
 from textwrap import indent
 from pyspark.sql import Row
 from pyspark.sql.functions import col,lit
-from utils.general_utils import clearSpaces
+from utils.general_utils import clearSpaces, cleanNullValues, replaceNaN, clearSpaceFirstChar
 from functions.harmonization import dfMapping, harmonizationTask, get_mapping_schema, preProcessJSON, get_harmo_schema
 from utils.conversion_utils import convertUnits
 from pyspark import SparkFiles, SparkContext
@@ -14,10 +14,14 @@ def ingestBatchTask(spark, type, data_type, params, mapping_schema_file):
     # TODO: Use Spark read to ingest different types of data
     if type != '':
         if type == 'database':
+            provider = params['provider']
             harmo_schema = get_harmo_schema(data_type)
             mapping_schema = get_mapping_schema(mapping_schema_file)
             df = readRDBMS(spark, params)
-            df = dfMapping(mapping_schema, df)
+            #df = cleanNullValues(df)
+            df = replaceNaN(df)
+            df = df.withColumn('Provider',lit(provider))
+            df = dfMapping(harmo_schema, mapping_schema, df)
             df = harmonizationTask(df, spark, harmo_schema)
             return df
         elif type == 'webservice':
@@ -59,7 +63,7 @@ def ingestBatchTask(spark, type, data_type, params, mapping_schema_file):
                 df = spark.read.options(delimiter=delimiter, header=True).csv(file_path)
                 df = df.withColumn('Provider',lit(provider))
                 # Clear spaces from column names
-                df = clearSpaces(df)
+                df = clearSpaceFirstChar(df)
                 # Maps the columns to the harmonized dataframe columns
                 df = dfMapping(harmo_schema, mapping_schema, df)
                 print(df)

@@ -1,9 +1,17 @@
 from crontab import CronTab
+from pyspark.sql.functions import col
 
 def clearSpaces(df):
     for x in df.columns:
         newName = x.replace(" ", "")
         df = df.withColumnRenamed(x, newName)
+    return df
+
+def clearSpaceFirstChar(df):
+    for x in df.columns:
+        if x[0] == " ":
+            newName = x[1:]
+            df = df.withColumnRenamed(x, newName)
     return df
 
 def get_value(key, data):
@@ -15,6 +23,17 @@ def get_value(key, data):
         else:
             return None
     return y
+
+def replaceNaN(df):
+    df = df.replace(float('nan'), None)
+    
+    return df
+
+def cleanNullValues(df):
+    for column in df.columns:
+        df = df.filter(col(column).isNotNull())
+
+    return df
 
 def startCronJob(interval="minutes", deltat=1, types="", data_type="", params="", mapping_schema=""):
     script2run = "bash schedule_ingest_job.sh '" + types + "' '" + data_type + "' '" + params + "' '" + mapping_schema + "'"

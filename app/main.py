@@ -165,6 +165,7 @@ def ingestBatchEndpoint():
             }
             
             print(dbparams)
+            print(df.head(5))
             #myhost = __jdbc_url.replace("monetdb://", "")
             # conn = pymonetdb.connect(username=__jdbc_user, password=__jdbc_pass, hostname=myhost, database=__jdbc_db)
             # cursor = conn.cursor()

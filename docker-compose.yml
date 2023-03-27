@@ -1,4 +1,4 @@
-version: "2.1"
+version: '2.1'
 services:
   spark:
     #image: docker.io/bitnami/spark:3
@@ -22,7 +22,7 @@ services:
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark:7077
-      - SPARK_WORKER_MEMORY=2G
+      - SPARK_WORKER_MEMORY=8G
       - SPARK_WORKER_CORES=1
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
       - SPARK_RPC_ENCRYPTION_ENABLED=no
@@ -54,7 +54,7 @@ services:
     ports: 
       - "5434:5432"
     volumes:
-      - ./postgres/ais_data_backup.sql:/docker-entrypoint-initdb.d/ais_data_backup.sql
+      - ./postgres/1_init_vesselai.sql:/docker-entrypoint-initdb.d/1_init_vesselai.sql
   # monetdb:
   #   image: monetdb/vessel_ai:latest
   #   ports: 
@@ -68,13 +68,12 @@ services:
   #     - type: bind
   #       source: ./monetdb
   #       target: /initdb
-  
   app:
     build: ./app
     environment:
       - PYTHONUNBUFFERED=1
     ports:
-     - '5002:5002'
+     - "5002:5002"
     volumes:
      - ./app:/app
      - /opt/bitnami/spark/files:/opt/bitnami/spark/files
