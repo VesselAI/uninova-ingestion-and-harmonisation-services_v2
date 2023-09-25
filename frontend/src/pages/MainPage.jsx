@@ -8,7 +8,6 @@ import Workspace from '../components/Workspace/Workspace';
 // Custom Imports
 import SideBar from '../components/SideBar/SideBar';
 
-
 function MainPage() {
 
     return (
@@ -19,7 +18,7 @@ function MainPage() {
                 </Col>
                 <Col xs={10} className="p-0 canvas-column">
                     <Row>
-                        <ProfileMenu></ProfileMenu>
+                        <ProfileMenu ></ProfileMenu>
                     </Row>
                     <Workspace />
                 </Col>
