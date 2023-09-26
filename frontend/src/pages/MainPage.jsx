@@ -14,15 +14,15 @@ function MainPage() {
         <Container fluid>
             <Row className="h-100">
                 <Col xs={2} className="p-0">
-                    <SideBar/>
+                    <SideBar />
                 </Col>
                 <Col xs={10} className="p-0 canvas-column">
-                    <Row>
-                        <ProfileMenu ></ProfileMenu>
-                    </Row>
+                    <Container fluid className="">
+                        <ProfileMenu></ProfileMenu>
+                    </Container>
                     <Workspace />
                 </Col>
-            </Row>               
+            </Row>
         </Container>
     );
 }
