@@ -117,10 +117,8 @@
     color: white;
     text-align: center;
     background: #008DD2;
-    height: 3vh;
     font-size: 12px;
     filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.4));
-
     /* border-bottom-right-radius: 7px; */
 }
 
@@ -182,4 +180,31 @@ div.sidebar-style .card-body:hover{
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #0027d2; 
+}
+
+/* *********************** */
+.sidebar-base{
+    height: 100vh;
+    background: #008DD2;
+    color: white;
+    text-align: center;
+    font-size: 12px;
+    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.4));
+}
+
+.sidebar-header{
+    padding-top: 5%;
+}
+
+.sidebar-logo-text{
+    color: white;
+    margin-bottom: 0;
+    padding-top: 4px;
+}
+
+.uninova-2023-text {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
 }
