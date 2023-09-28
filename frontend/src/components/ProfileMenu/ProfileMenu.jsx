@@ -27,4 +27,4 @@ function ProfileMenu() {
     )
 }
 
-export default ProfileMenu
+export default ProfileMenu;
