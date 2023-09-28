@@ -1,4 +1,3 @@
-
 #linha-horizontal {
     /* width: 150px; */
     /* margin-top: 15px; */
@@ -7,7 +6,8 @@
     /* margin-bottom: 15px; */
     border: 1px solid white;
 }
-.uninova-2023{
+
+.uninova-2023 {
     color: white;
     text-align: center;
     background: #008DD2;
@@ -16,15 +16,16 @@
     /* border-bottom-right-radius: 7px; */
 }
 
-#linha-horizontal-bottom{
+#linha-horizontal-bottom {
     /* margin-top: 15px;
     margin-bottom: 15px; */
     margin-left: 10px;
     margin-right: 10px;
     border: 1px solid white;
 }
+
 /* *********************** */
-.sidebar-base{
+.sidebar-base {
     height: 100vh;
     background: #008DD2;
     color: white;
@@ -33,11 +34,16 @@
     filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.4));
 }
 
-.sidebar-header{
+.sidebar-header {
     padding-top: 5%;
 }
 
-.sidebar-logo-text{
+.sidebar-middle {
+    height: 60vh;
+    align-content: center;
+}
+
+.sidebar-logo-text {
     color: white;
     margin-bottom: 0;
     padding-top: 4px;
@@ -48,4 +54,15 @@
     position: absolute;
     bottom: 0;
     text-align: center;
+}
+
+.sidebar-middle-text {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.stepstack-pos {
+    align-items: end;
+    display: flex;
+    justify-content: center;
 }
