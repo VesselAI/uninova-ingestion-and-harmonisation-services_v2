@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -9,6 +9,7 @@ import { BiRightArrowAlt } from "react-icons/bi";
 import Dropdown from "../Dropdowns/Dropdown";
 import ListItems from '../ListItems/ListItems';
 import DropdownSimple from '../Dropdowns/DropdownSimple';
+import DataContext from '../../context/IngestionDataProvider';
 import './SelectSchema.css'
 
 // import FileForm from '../Forms/FileForm';
@@ -18,15 +19,7 @@ import './SelectSchema.css'
 
 function SelectSchema() {
 
-
-    const [ingestionData, setIngestionData] = useState({
-        name: "",
-        task: "",
-        type: "",
-        params: {},
-        data_type: "",
-        mapping_schema: ""
-    })
+    const { ingestionData, updateIngestionData } = useContext(DataContext);
 
     const [params, setParams] = useState({});
     const [button, setButton] = useState(false);
@@ -59,7 +52,7 @@ function SelectSchema() {
             ['mapping_schema']: mapSchemaName,
         };
 
-        setIngestionData(updatedIngestionData);
+        updateIngestionData(updatedIngestionData);
         console.log(ingestionData);
     }
 
@@ -71,7 +64,7 @@ function SelectSchema() {
                     Mapping Schema
                 </Col>
                 <Col>
-                    <Dropdown type='mapping_schema' defaultValue='Select the Mapping Schema' options={['XXXXX', 'YYYYYY', 'ZZZZZ']} data={ingestionData} setData={setIngestionData} setParams={setParams} />
+                    <Dropdown type='mapping_schema' defaultValue='Select the Mapping Schema' options={['XXXXX', 'YYYYYY', 'ZZZZZ']} data={ingestionData} setData={updateIngestionData} setParams={setParams} />
                 </Col>
                 <Col className='col1' xs={1}>
                     <Button className='button-left' variant="outline-primary" onClick={handleClick} > + </Button>
@@ -87,7 +80,7 @@ function SelectSchema() {
                 <Container fluid className={'container-mapping-schema'} >
                     <Row className='box2'>
                         <Col className='col2'>
-                            <Dropdown  type='data_type' defaultValue='Select the data type' options={['AIS Data', 'Weather Data', 'Noon Reports Data']} data={ingestionData} setData={setIngestionData} setParams={setParams} />
+                            <Dropdown  type='data_type' defaultValue='Select the data type' options={['AIS Data', 'Weather Data', 'Noon Reports Data']} data={ingestionData} setData={updateIngestionData} setParams={setParams} />
                         </Col>
                     </Row>
                     <Row className='box-mapping-schema'>

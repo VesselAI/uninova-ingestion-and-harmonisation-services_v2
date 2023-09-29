@@ -4,28 +4,31 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from "react-router-dom";
+import { useState, useContext } from 'react';
+import DataContext from '../../context/IngestionDataProvider';
 
-
-function WebserviceForm({ webForm, setWebForm, ingestionData, setIngestionData }) {
+function WebserviceForm({}) {
     
+    const { ingestionData, updateIngestionData } = useContext(DataContext);
+    const [webserviceForm, setWebserviceForm] = useState({});
     const navigate = useNavigate();
 
     const handleChange = (event) => {
-        console.log(webForm);
+        console.log(webserviceForm);
         const updatedWebForm = {
-            ...webForm,
+            ...webserviceForm,
             [event.target.name]: event.target.value
         }
-        setWebForm(updatedWebForm)
+        setWebserviceForm(updatedWebForm)
     }
 
     const handleSubmit = () => {
         const updatedIngestionData = {
             ...ingestionData,
-            params: webForm
+            params: webserviceForm
         };
 
-        setIngestionData(updatedIngestionData);
+        updateIngestionData(updatedIngestionData);
         navigate("/schema_selection", { replace: true });
     }
 

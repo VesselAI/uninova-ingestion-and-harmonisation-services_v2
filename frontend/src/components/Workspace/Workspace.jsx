@@ -6,21 +6,13 @@ import Dropdown from "../Dropdowns/Dropdown";
 import FileForm from '../Forms/FileForm';
 import DatabaseForm from '../Forms/DatabaseForm';
 import WebserviceForm from '../Forms/WebserviceForm';
+import { useContext } from 'react';
+import DataContext from '../../context/IngestionDataProvider';
 import './Workspace.css'
 
 function Workspace() {
 
-
-    const [ingestionData, setIngestionData] = useState({
-        name: "",
-        task: "",
-        type: "",
-        params: {},
-        data_type: "",
-        mapping_schema: ""
-    })
-
-    const [params, setParams] = useState({});
+    const {ingestionData, updateIngestionData, params, updateParams} = useContext(DataContext);
 
     return (
         <Container>
@@ -30,7 +22,7 @@ function Workspace() {
                     Select Data Type
                 </Col>
                 <Col>
-                    <Dropdown type='data_type' defaultValue='Type of Data' options={['AIS', 'Weather']} data={ingestionData} setData={setIngestionData}></Dropdown>
+                    <Dropdown type='data_type' defaultValue='Type of Data' options={['AIS', 'Weather']} data={ingestionData} setData={updateIngestionData}></Dropdown>
                 </Col>
             </Row>
             <Row className="box">
@@ -38,18 +30,18 @@ function Workspace() {
                     Select Connection
                 </Col>
                 <Col>
-                    <Dropdown type='type' defaultValue='Connection option' options={['File', 'Database', 'Webservice']} data={ingestionData} setData={setIngestionData} setParams={setParams}></Dropdown>
+                    <Dropdown type='type' defaultValue='Connection option' options={['File', 'Database', 'Webservice']} data={ingestionData} setData={updateIngestionData} setParams={updateParams}></Dropdown>
                 </Col>
             </Row>
             <Row>
                 {ingestionData.type === 'File' && (
-                    <FileForm fileForm={params} setFileForm={setParams} ingestionData={ingestionData} setIngestionData={setIngestionData}/>
+                    <FileForm/>
                 )}
                 {ingestionData.type === 'Database' && (
-                    <DatabaseForm databaseForm={params} setDatabaseForm={setParams} ingestionData={ingestionData} setIngestionData={setIngestionData}/>
+                    <DatabaseForm />
                 )}
                 {ingestionData.type === 'Webservice' && (
-                    <WebserviceForm webForm={params} setWebForm={setParams} ingestionData={ingestionData} setIngestionData={setIngestionData}/>
+                    <WebserviceForm />
                 )}
             </Row>
         </Container>

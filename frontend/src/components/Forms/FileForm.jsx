@@ -3,13 +3,16 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import { useEffect } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
+import DataContext from '../../context/IngestionDataProvider';
 import "../Workspace/Workspace.css"
 
 
-function FileForm({ fileForm, setFileForm, ingestionData, setIngestionData }) {
+function FileForm({ }) {
 
+    const { ingestionData, updateIngestionData } = useContext(DataContext);
+    const [fileForm, setFileForm] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -21,9 +24,7 @@ function FileForm({ fileForm, setFileForm, ingestionData, setIngestionData }) {
             file_path: ''
         }
         setFileForm(updatedFileForm)
-
-        // You can perform any other actions or side effects here
-
+        
         // Cleanup function (optional) - it will run when the component unmounts
         return () => {
             // Cleanup code here (if needed)
@@ -31,7 +32,6 @@ function FileForm({ fileForm, setFileForm, ingestionData, setIngestionData }) {
     }, []); // Empty dependency array means this effect runs once
 
     const handleChange = (event) => {
-        console.log(fileForm);
         const updatedFileForm = {
             ...fileForm,
             [event.target.name]: event.target.value
@@ -46,7 +46,7 @@ function FileForm({ fileForm, setFileForm, ingestionData, setIngestionData }) {
             params: fileForm
         };
 
-        setIngestionData(updatedIngestionData);
+        updateIngestionData(updatedIngestionData);
         navigate("/schema_selection", { replace: true });
 
     }

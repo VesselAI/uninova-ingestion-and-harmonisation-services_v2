@@ -7,6 +7,8 @@ import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
+
+import { IngestionDataProvider } from './context/IngestionDataProvider';
 // CSS Imports
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css'
@@ -17,12 +19,16 @@ function App() {
         {
             path: "/",
             element: 
+            <IngestionDataProvider>
                 <MainPage />
+            </IngestionDataProvider>
         },
         {
             path: "/schema_selection",
-            element: 
+            element:
+            <IngestionDataProvider>
                 <SchemaSelectionPage />
+            </IngestionDataProvider>
         }
     ]);
 
