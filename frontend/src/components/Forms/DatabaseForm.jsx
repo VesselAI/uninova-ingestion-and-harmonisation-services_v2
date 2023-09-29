@@ -3,8 +3,12 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from "react-router-dom";
+
 
 function DatabaseForm({databaseForm, setDatabaseForm, ingestionData, setIngestionData }) {
+
+    const navigate = useNavigate();
 
     const handleChange = (event) => {
         console.log(databaseForm);
@@ -22,12 +26,13 @@ function DatabaseForm({databaseForm, setDatabaseForm, ingestionData, setIngestio
         };
 
         setIngestionData(updatedIngestionData);
+        navigate("/schema_selection", { replace: true });
     }
 
     return (
         <Form className="mt-3">
             <Row className="box">
-                <Col className="col1">
+                <Col className="col-conn-type">
                     <InputGroup>
                         <InputGroup.Text id="provider" className="input-group-text-size">
                             Provider
@@ -37,7 +42,7 @@ function DatabaseForm({databaseForm, setDatabaseForm, ingestionData, setIngestio
                 </Col>
             </Row>
             <Row className="box">
-                <Col className="col1">
+                <Col className="col-conn-type">
                     <InputGroup>
                         <InputGroup.Text id="url" className="input-group-text-size">URL</InputGroup.Text>
                         <Form.Control name="url" type="text" aria-label="Input url" onChange={handleChange}/>
@@ -47,7 +52,7 @@ function DatabaseForm({databaseForm, setDatabaseForm, ingestionData, setIngestio
                 </Col>
             </Row>
             <Row className="box">
-                <Col className="col1">
+                <Col className="col-conn-type">
                     <InputGroup>
                         <InputGroup.Text id="database" className="input-group-text-size">
                             Database
@@ -57,7 +62,7 @@ function DatabaseForm({databaseForm, setDatabaseForm, ingestionData, setIngestio
                 </Col>
             </Row>
             <Row className="box">
-                <Col className="col1">
+                <Col className="col-conn-type">
                     <InputGroup>
                         <InputGroup.Text id="table" className="input-group-text-size">
                             Table
@@ -67,7 +72,7 @@ function DatabaseForm({databaseForm, setDatabaseForm, ingestionData, setIngestio
                 </Col>
             </Row>
             <Row className="box">
-                <Col className="col1">
+                <Col className="col-conn-type">
                     <InputGroup>
                         <InputGroup.Text id="username" className="input-group-text-size">
                             Username
@@ -77,7 +82,7 @@ function DatabaseForm({databaseForm, setDatabaseForm, ingestionData, setIngestio
                 </Col>
             </Row>
             <Row className="box">
-                <Col className="col1">
+                <Col className="col-conn-type">
                     <InputGroup>
                         <InputGroup.Text id="secret" className="input-group-text-size">
                             Password
@@ -87,7 +92,7 @@ function DatabaseForm({databaseForm, setDatabaseForm, ingestionData, setIngestio
                 </Col>
             </Row>
             <Row className="box">
-                <Col className="col1">
+                <Col className="col-conn-type">
                     <InputGroup>
                         <InputGroup.Text id="driver" className="input-group-text-size">
                             Driver

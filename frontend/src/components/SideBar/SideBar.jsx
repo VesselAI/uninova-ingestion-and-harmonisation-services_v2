@@ -6,7 +6,7 @@ import Image from 'react-bootstrap/Image';
 import StepsStack from "../StepsStack/StepsStack";
 import './SideBar.css'
 
-function SideBar() {
+function SideBar( {step}) {
     return (
         <Container className="sidebar-base">
             <Row className="sidebar-header">
@@ -18,7 +18,7 @@ function SideBar() {
                 </Col>
             </Row>
             <Row className="sidebar-middle">
-                    <StepsStack curstep={1}/>
+                    <StepsStack curstep={step}/>
             </Row>
             <Row className="uninova-2023-text">
                 <p>UNINOVA | Copyright© 2023 - All rights reserved</p>

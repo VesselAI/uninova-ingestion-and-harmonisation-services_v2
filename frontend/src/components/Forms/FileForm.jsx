@@ -4,8 +4,14 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
+import "../Workspace/Workspace.css"
+
 
 function FileForm({ fileForm, setFileForm, ingestionData, setIngestionData }) {
+
+    const navigate = useNavigate();
+
     useEffect(() => {
         // Code here will run on the first render of the component
         const updatedFileForm = {
@@ -41,14 +47,14 @@ function FileForm({ fileForm, setFileForm, ingestionData, setIngestionData }) {
         };
 
         setIngestionData(updatedIngestionData);
-
+        navigate("/schema_selection", { replace: true });
 
     }
 
     return (
         <Form onSubmit={handleSubmit} className="form-size">
             <Row className="box">
-                <Form.Group as={Col} className="col1">
+                <Form.Group as={Col} className="col-conn-type">
                     <InputGroup>
                         <InputGroup.Text id="provider" className="input-group-text-size">
                             Provider
@@ -58,7 +64,7 @@ function FileForm({ fileForm, setFileForm, ingestionData, setIngestionData }) {
                 </Form.Group>
             </Row>
             <Row className="box">
-                <Form.Group as={Col} className="col1">
+                <Form.Group as={Col} className="col-conn-type">
                     <InputGroup >
                         <InputGroup.Text id="file-type" className="input-group-text-size">
                             File Type
@@ -79,7 +85,7 @@ function FileForm({ fileForm, setFileForm, ingestionData, setIngestionData }) {
                 </Form.Group>
             </Row>
             <Row className="box">
-                <Form.Group as={Col} className="col1">
+                <Form.Group as={Col} className="col-conn-type">
                     <InputGroup>
                         <InputGroup.Text id="file-path" className="input-group-text-size">
                             File Path

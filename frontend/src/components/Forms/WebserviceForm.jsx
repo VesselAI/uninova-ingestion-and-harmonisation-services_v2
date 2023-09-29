@@ -3,11 +3,12 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from "react-router-dom";
 
 
 function WebserviceForm({ webForm, setWebForm, ingestionData, setIngestionData }) {
     
-
+    const navigate = useNavigate();
 
     const handleChange = (event) => {
         console.log(webForm);
@@ -25,12 +26,13 @@ function WebserviceForm({ webForm, setWebForm, ingestionData, setIngestionData }
         };
 
         setIngestionData(updatedIngestionData);
+        navigate("/schema_selection", { replace: true });
     }
 
     return (
         <Form onSubmit={handleSubmit}>
             <Row className="box">
-                <Form.Group as={Col} className="col1">
+                <Form.Group as={Col} className="col-conn-type">
                     <InputGroup >
                         <InputGroup.Text id="api-url" className="input-group-text-size">
                             API URL
@@ -40,7 +42,7 @@ function WebserviceForm({ webForm, setWebForm, ingestionData, setIngestionData }
                 </Form.Group>
             </Row>
             <Row className="box">
-                <Form.Group as={Col} className="col1">
+                <Form.Group as={Col} className="col-conn-type">
                     <InputGroup>
                         <InputGroup.Text id="header" className="input-group-text-size">
                             Header
@@ -50,7 +52,7 @@ function WebserviceForm({ webForm, setWebForm, ingestionData, setIngestionData }
                 </Form.Group>
             </Row>
             <Row className="box">
-                <Form.Group as={Col} className="col1">
+                <Form.Group as={Col} className="col-conn-type">
                     <InputGroup>
                         <InputGroup.Text id="token" className="input-group-text-size">
                             Token

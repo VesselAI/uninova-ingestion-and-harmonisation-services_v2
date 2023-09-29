@@ -14,7 +14,7 @@ function MainPage() {
         <Container fluid>
             <Row className="h-100">
                 <Col xs={2} className="p-0">
-                    <SideBar />
+                    <SideBar step={1}/>
                 </Col>
                 <Col xs={10} className="p-0 canvas-column">
                     <Container fluid className="">
