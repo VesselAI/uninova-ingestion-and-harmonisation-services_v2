@@ -1,6 +1,7 @@
 // React Imports
 import React from 'react';
 import MainPage from './pages/MainPage';
+import SchemaSelectionPage from './pages/SchemaSelectionPage';
 
 import {
     createBrowserRouter,
@@ -17,6 +18,11 @@ function App() {
             path: "/",
             element: 
                 <MainPage />
+        },
+        {
+            path: "/schema_selection",
+            element: 
+                <SchemaSelectionPage />
         }
     ]);
 
