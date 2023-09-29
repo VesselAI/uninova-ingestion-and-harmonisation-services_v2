@@ -4,10 +4,13 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from "react-router-dom";
+import { useState, useContext } from 'react';
+import DataContext from '../../context/IngestionDataProvider';
 
+function DatabaseForm({}) {
 
-function DatabaseForm({databaseForm, setDatabaseForm, ingestionData, setIngestionData }) {
-
+    const { ingestionData, updateIngestionData } = useContext(DataContext);
+    const [databaseForm, setDatabaseForm] = useState({});
     const navigate = useNavigate();
 
     const handleChange = (event) => {
@@ -25,7 +28,7 @@ function DatabaseForm({databaseForm, setDatabaseForm, ingestionData, setIngestio
             params: databaseForm
         };
 
-        setIngestionData(updatedIngestionData);
+        updateIngestionData(updatedIngestionData);
         navigate("/schema_selection", { replace: true });
     }
 
