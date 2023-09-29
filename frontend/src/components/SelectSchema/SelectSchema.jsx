@@ -74,7 +74,7 @@ function SelectSchema() {
                     <Dropdown type='mapping_schema' defaultValue='Select the Mapping Schema' options={['XXXXX', 'YYYYYY', 'ZZZZZ']} data={ingestionData} setData={setIngestionData} setParams={setParams} />
                 </Col>
                 <Col className='col1' xs={1}>
-                    <Button className='button-right' variant="outline-primary" onClick={handleClick} > + </Button>
+                    <Button className='button-left' variant="outline-primary" onClick={handleClick} > + </Button>
                 </Col>
                 <Col className='col3' xs={1}>
                     <Button className='button-fit' variant="primary" onClick={handleSelect}> 
@@ -84,7 +84,7 @@ function SelectSchema() {
             </Row>
 
             {button === true && (
-                <Container fluid>
+                <Container fluid className={'container-mapping-schema'} >
                     <Row className='box2'>
                         <Col className='col2'>
                             <Dropdown  type='data_type' defaultValue='Select the data type' options={['AIS Data', 'Weather Data', 'Noon Reports Data']} data={ingestionData} setData={setIngestionData} setParams={setParams} />
@@ -99,16 +99,16 @@ function SelectSchema() {
                         </Col> 
                     </Row>
 
-                    <Row className='box-mapping-schema'>
-                        <Col className='col2'>
+                    <Row className='box-name-save'>
+                        <Col className='col-form'>
                             <Form className='form'>
-                                <Form.Group as={Col} className="col2">
+                                <Form.Group as={Col} className="col-form">
                                     <InputGroup >
                                         <InputGroup.Text id="schema_name" className="input-group-text-size">
                                             Name
                                         </InputGroup.Text>
                                         <Form.Control name="schema_name" placeholder="Name the mapping schema" onChange={handleChange} />
-                                        <Button variant="outline-primary" onClick={handleSubmit} > Save </Button>
+                                        <Button variant="primary" onClick={handleSubmit} > Save </Button>
                                     </InputGroup>
                                 </Form.Group>
                             </Form>
