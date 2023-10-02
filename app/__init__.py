@@ -3,6 +3,7 @@ import os
 from flask import Flask
 #from flask_mongoengine import MongoEngine
 from flask_restful import Api
+from flask_cors import CORS
 from configparser import ConfigParser
 
 
@@ -59,6 +60,7 @@ app = Flask(__name__)
 app.config.update(app_settings)
 
 # Init other Flask components
+CORS(app)
 #db = MongoEngine()
 api = Api(app)
 
