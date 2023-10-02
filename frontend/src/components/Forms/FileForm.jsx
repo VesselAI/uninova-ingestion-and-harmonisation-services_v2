@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import DataContext from '../../context/IngestionDataProvider';
+import { testeApi } from '../../utils/Backend';
 import "../Workspace/Workspace.css"
 
 
@@ -47,8 +48,8 @@ function FileForm({ }) {
         };
 
         updateIngestionData(updatedIngestionData);
+        testeApi();
         navigate("/schema_selection", { replace: true });
-
     }
 
     return (
