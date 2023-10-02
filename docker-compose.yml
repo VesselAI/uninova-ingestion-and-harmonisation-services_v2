@@ -46,15 +46,15 @@ services:
       - "27018:27017"
     volumes:
       - ./mongo/initdb.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
-  # postgres:
-  #   image: postgres:12.0
-  #   environment:
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: grisgris123
-  #   ports: 
-  #     - "5434:5432"
-  #   volumes:
-  #     - ./postgres/1_init_vesselai.sql:/docker-entrypoint-initdb.d/1_init_vesselai.sql
+  postgres:
+    image: postgres:12.0
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: grisgris123
+    ports: 
+      - "5434:5432"
+    volumes:
+      - ./postgres/1_init_vesselai.sql:/docker-entrypoint-initdb.d/1_init_vesselai.sql
   frontend:
     container_name: frontend
     build: ./frontend
