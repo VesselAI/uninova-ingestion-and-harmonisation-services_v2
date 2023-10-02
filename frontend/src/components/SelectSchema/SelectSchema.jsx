@@ -10,6 +10,7 @@ import Dropdown from "../Dropdowns/Dropdown";
 import ListItems from '../ListItems/ListItems';
 import DropdownSimple from '../Dropdowns/DropdownSimple';
 import DataContext from '../../context/IngestionDataProvider';
+import { useNavigate } from "react-router-dom";
 import './SelectSchema.css'
 
 // import FileForm from '../Forms/FileForm';
@@ -27,6 +28,8 @@ function SelectSchema() {
     const [nlpSchema, setNlpSchema] = useState(['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c']);
     const [mapSchemaName, setMapSchemaName] = useState('');
     const [mapSchemaList, setMapSchemaList] = useState([]);
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         // TODO: Get list of mapping schemas
@@ -54,6 +57,7 @@ function SelectSchema() {
 
         updateIngestionData(updatedIngestionData);
         console.log(ingestionData);
+        navigate("/harmonization", { replace: true });
     }
 
     return (

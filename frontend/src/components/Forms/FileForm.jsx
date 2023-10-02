@@ -40,7 +40,7 @@ function FileForm({ }) {
         setFileForm(updatedFileForm)
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
 
         const updatedIngestionData = {
             ...ingestionData,
@@ -48,7 +48,6 @@ function FileForm({ }) {
         };
 
         updateIngestionData(updatedIngestionData);
-        testeApi();
         navigate("/schema_selection", { replace: true });
     }
 
