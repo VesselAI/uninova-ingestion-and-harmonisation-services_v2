@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 
 import { IngestionDataProvider } from './context/IngestionDataProvider';
+import HarmonizationPage from './pages/HarmonizationPage';
 // CSS Imports
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css'
@@ -29,6 +30,11 @@ function App() {
             <IngestionDataProvider>
                 <SchemaSelectionPage />
             </IngestionDataProvider>
+        },
+        {
+            path: "/harmonization",
+            element:
+                <HarmonizationPage />
         }
     ]);
 

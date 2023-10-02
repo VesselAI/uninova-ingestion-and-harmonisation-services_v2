@@ -1,0 +1,16 @@
+.loading-row{
+    height: 95%;
+    align-content: center;
+    justify-content: center;
+}
+
+.custom-spinner{
+    width: 300px !important;
+    height: 300px !important;
+    border-width: 40px !important;
+    color: #008DD2;
+}
+
+.loading-text{
+    text-align: center;
+}
