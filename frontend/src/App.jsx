@@ -34,7 +34,9 @@ function App() {
         {
             path: "/harmonization",
             element:
+            <IngestionDataProvider>
                 <HarmonizationPage />
+            </IngestionDataProvider>
         }
     ]);
 
