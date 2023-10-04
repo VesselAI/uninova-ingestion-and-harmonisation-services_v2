@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useMemo, useState } from "react";
 // import { useLocalStorage } from "./useLocalStorage";
 
 const DataContext = createContext();
@@ -11,7 +11,8 @@ const IngestionDataProvider = ({ children }) => {
         type: "",
         params: {},
         data_type: "",
-        mapping_schema: ""
+        mapping_schema: "",
+        output_db_type: "mongo"
     })
 
     const [params, setParams] = useState({});

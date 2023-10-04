@@ -68,7 +68,7 @@ function SelectSchema() {
                     Mapping Schema
                 </Col>
                 <Col>
-                    <Dropdown type='mapping_schema' defaultValue='Select the Mapping Schema' options={['XXXXX', 'YYYYYY', 'ZZZZZ']} data={ingestionData} setData={updateIngestionData} setParams={setParams} />
+                    <Dropdown type='mapping_schema' defaultValue='Select the Mapping Schema' options={['ais_unipi_mapping', 'YYYYYY', 'ZZZZZ']} data={ingestionData} setData={updateIngestionData} setParams={setParams} />
                 </Col>
                 <Col className='col1' xs={1}>
                     <Button className='button-left' variant="outline-primary" onClick={handleClick} > + </Button>
