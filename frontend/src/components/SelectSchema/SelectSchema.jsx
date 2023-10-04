@@ -11,6 +11,7 @@ import ListItems from '../ListItems/ListItems';
 import DropdownSimple from '../Dropdowns/DropdownSimple';
 import DropdownMapping from '../Dropdowns/DropdownMapping';
 import DataContext from '../../context/IngestionDataProvider';
+import { useNavigate } from "react-router-dom";
 import './SelectSchema.css'
 import { updateMappingSchemaList, getMappingSchemaList } from '../../utils/Backend';
 
@@ -30,6 +31,8 @@ function SelectSchema() {
     const [mapSchemaName, setMapSchemaName] = useState('');
     const [mapSchemaType, setMapSchemaType] = useState('');
     const [mapSchemaList, setMapSchemaList] = useState([]);
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         fetchData();
@@ -71,6 +74,7 @@ function SelectSchema() {
 
         updateIngestionData(updatedIngestionData);
         console.log(ingestionData);
+        navigate("/harmonization", { replace: true });
     }
 
     return (

@@ -70,7 +70,7 @@ function DatabaseForm({}) {
                         <InputGroup.Text id="table" className="input-group-text-size">
                             Table
                         </InputGroup.Text>
-                        <Form.Control name="dbtable" type="text" aria-label="Select table" onChange={handleChange}/>
+                        <Form.Control name="db_table" type="text" aria-label="Select table" onChange={handleChange}/>
                     </InputGroup>
                 </Col>
             </Row>
