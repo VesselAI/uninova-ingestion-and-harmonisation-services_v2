@@ -7,3 +7,4 @@ requests==2.27.1
 pymonetdb==1.5.1
 Flask-Cors==3.0.10
 kafka-python
+pymongo

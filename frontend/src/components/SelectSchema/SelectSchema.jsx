@@ -9,8 +9,10 @@ import { BiRightArrowAlt } from "react-icons/bi";
 import Dropdown from "../Dropdowns/Dropdown";
 import ListItems from '../ListItems/ListItems';
 import DropdownSimple from '../Dropdowns/DropdownSimple';
+import DropdownMapping from '../Dropdowns/DropdownMapping';
 import DataContext from '../../context/IngestionDataProvider';
 import './SelectSchema.css'
+import { updateMappingSchemaList, getMappingSchemaList } from '../../utils/Backend';
 
 // import FileForm from '../Forms/FileForm';
 // import DatabaseForm from '../Forms/DatabaseForm';
@@ -26,12 +28,22 @@ function SelectSchema() {
     const [dataSchema, setDataSchema] = useState(['A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C']);
     const [nlpSchema, setNlpSchema] = useState(['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c']);
     const [mapSchemaName, setMapSchemaName] = useState('');
+    const [mapSchemaType, setMapSchemaType] = useState('');
     const [mapSchemaList, setMapSchemaList] = useState([]);
 
     useEffect(() => {
-        // TODO: Get list of mapping schemas
+        fetchData();
         // TODO: Get raw and NLP harmonized schemas
     }, [])
+
+    useEffect(() => {
+        console.log(mapSchemaType);
+    }, [mapSchemaType])
+
+    async function fetchData () {
+        const list = await getMappingSchemaList();
+        setMapSchemaList(list);
+    }
 
     const handleClick = () => {
         setButton(!button);
@@ -39,6 +51,11 @@ function SelectSchema() {
 
     const handleSubmit = () => {
         // TODO: Save Mapping Schema
+
+        const updatedSchemaList = [...mapSchemaList, mapSchemaName];
+        setMapSchemaList(updatedSchemaList);
+        updateMappingSchemaList({'schema_type': mapSchemaType, 'mapping_schema_name': mapSchemaName});
+
         setButton(false);
     }
     const handleChange = (event) => {
@@ -64,7 +81,7 @@ function SelectSchema() {
                     Mapping Schema
                 </Col>
                 <Col>
-                    <Dropdown type='mapping_schema' defaultValue='Select the Mapping Schema' options={['XXXXX', 'YYYYYY', 'ZZZZZ']} data={ingestionData} setData={updateIngestionData} setParams={setParams} />
+                    <Dropdown type='mapping_schema' defaultValue='Select the Mapping Schema' options={mapSchemaList} data={ingestionData} setData={updateIngestionData} setParams={setParams} />
                 </Col>
                 <Col className='col1' xs={1}>
                     <Button className='button-left' variant="outline-primary" onClick={handleClick} > + </Button>
@@ -80,7 +97,7 @@ function SelectSchema() {
                 <Container fluid className={'container-mapping-schema'} >
                     <Row className='box2'>
                         <Col className='col2'>
-                            <Dropdown  type='data_type' defaultValue='Select the data type' options={['AIS Data', 'Weather Data', 'Noon Reports Data']} data={ingestionData} setData={updateIngestionData} setParams={setParams} />
+                            <DropdownMapping  type='data_type' defaultValue='Select the data type' options={['AIS Data', 'Weather Data', 'Noon Reports Data']} setMappingSchemaType={setMapSchemaType} />
                         </Col>
                     </Row>
                     <Row className='box-mapping-schema'>
