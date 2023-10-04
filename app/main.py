@@ -11,10 +11,11 @@ from functions.storage import storeToJDBC, storeToMongo , sendToKafka
 from configparser import ConfigParser
 import subprocess
 import pymonetdb
+import pymongo
 
 app = createApp()
 
-##JDBC database config
+##JDBC/MONGO database config
 ## Default variables
 __db_type = "jdbc"
 __jdbc_url = 'monetdb://127.0.0.1'
@@ -23,6 +24,12 @@ __jdbc_db = 'vesselai'
 __jdbc_user = 'uninova'
 __jdbc_pass = 'grisgris123'
 __jdbc_driver = 'org.monetdb.jdbc.MonetDriver'
+
+__mongo_host = ''
+__mongo_port = ''
+__mongo_db = ''
+__mongo_user = ''
+__mongo_pass = ''
 
 
 @app.route("/")
@@ -36,6 +43,70 @@ def teste_nuclear():
     version = subprocess.check_output(['java', '-version'], stderr=subprocess.STDOUT)
     return version
 
+@app.route("/save_to_mapping_schema_list", methods=["POST"])
+def save_to_mapping_schema_list():
+    config_object = ConfigParser()
+    with open('config.ini', 'r', encoding='utf-8') as f:
+        config_object.readfp(f)
+    ## If key exists in config and it's not empty, uses config file params
+    if "JDBCCONFIG" in config_object:
+        if config_object.items("MONGOCONFIG") != None:
+            __mongo_host = config_object.get("MONGOCONFIG", "mongo_host")
+            __mongo_port = config_object.get("MONGOCONFIG", "mongo_port")
+            __mongo_db = config_object.get("MONGOCONFIG", "mongo_db")
+            __mongo_user = config_object.get("MONGOCONFIG", "mongo_user")
+            __mongo_pass = config_object.get("MONGOCONFIG", "mongo_pass")
+
+    ## If there are environment variables defined for the paramenters, use envvars instead
+    if os.environ.get('HARMONIZATION_MONGO_HOST'): __mongo_host = os.environ.get('HARMONIZATION_MONGO_HOST')
+    if os.environ.get('HARMONIZATION_MONGO_PORT'): __mongo_port = os.environ.get('HARMONIZATION_MONGO_PORT')
+    if os.environ.get('HARMONIZATION_MONGO_DB'): __mongo_db = os.environ.get('HARMONIZATION_MONGO_DB')
+    if os.environ.get('HARMONIZATION_MONGO_USER'): __mongo_user = os.environ.get('HARMONIZATION_MONGO_USER')
+    if os.environ.get('HARMONIZATION_MONGO_PASS'): __mongo_pass = os.environ.get('HARMONIZATION_MONGO_PASS')
+
+    
+    if request.is_json:
+        data = request.get_json()
+    print(data)
+    myclient = pymongo.MongoClient("mongodb://" + __mongo_user + ":" + __mongo_pass + "@" + __mongo_host + ":" + __mongo_port + "/?authSource=admin&readPreference=primary&ssl=false" )
+    mydb = myclient[__mongo_db]
+    mycol = mydb["mapping_schema_list"]
+    mycol.insert_one({'schema_type':data['schema_type'], 'mapping_schema_name': data['mapping_schema_name']})
+
+    return "Success"
+
+@app.route("/get_mapping_schema_list", methods=["GET"])
+def get_mapping_schema_list():
+    config_object = ConfigParser()
+    with open('config.ini', 'r', encoding='utf-8') as f:
+        config_object.readfp(f)
+    ## If key exists in config and it's not empty, uses config file params
+    if "JDBCCONFIG" in config_object:
+        if config_object.items("MONGOCONFIG") != None:
+            __mongo_host = config_object.get("MONGOCONFIG", "mongo_host")
+            __mongo_port = config_object.get("MONGOCONFIG", "mongo_port")
+            __mongo_db = config_object.get("MONGOCONFIG", "mongo_db")
+            __mongo_user = config_object.get("MONGOCONFIG", "mongo_user")
+            __mongo_pass = config_object.get("MONGOCONFIG", "mongo_pass")
+
+    ## If there are environment variables defined for the paramenters, use envvars instead
+    if os.environ.get('HARMONIZATION_MONGO_HOST'): __mongo_host = os.environ.get('HARMONIZATION_MONGO_HOST')
+    if os.environ.get('HARMONIZATION_MONGO_PORT'): __mongo_port = os.environ.get('HARMONIZATION_MONGO_PORT')
+    if os.environ.get('HARMONIZATION_MONGO_DB'): __mongo_db = os.environ.get('HARMONIZATION_MONGO_DB')
+    if os.environ.get('HARMONIZATION_MONGO_USER'): __mongo_user = os.environ.get('HARMONIZATION_MONGO_USER')
+    if os.environ.get('HARMONIZATION_MONGO_PASS'): __mongo_pass = os.environ.get('HARMONIZATION_MONGO_PASS')
+
+    myclient = pymongo.MongoClient("mongodb://" + __mongo_user + ":" + __mongo_pass + "@" + __mongo_host + ":" + __mongo_port + "/?authSource=admin&readPreference=primary&ssl=false" )
+    mydb = myclient[__mongo_db]
+    mycol = mydb["mapping_schema_list"]
+    cursor = mycol.find({})
+    data = []
+    for document in cursor:
+        document = document.pop('mapping_schema_name')
+        data.append(document)
+    data = json.dumps(data)
+    print(data)
+    return data
 
 @app.route("/update_config", methods=["POST"])
 def update_config():

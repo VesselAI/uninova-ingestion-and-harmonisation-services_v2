@@ -60,6 +60,7 @@ services:
     build: ./frontend
     environment:
       - CHOKIDAR_USERPOLLING=true
+      - WATCHPACK_POLLING=true
     ports:
      - 3000:3000
     volumes:
