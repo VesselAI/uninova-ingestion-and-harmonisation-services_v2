@@ -21,7 +21,7 @@ function Workspace() {
                     Select Data Type
                 </Col>
                 <Col>
-                    <Dropdown type='data_type' defaultValue='Type of Data' options={['AIS', 'Weather']} data={ingestionData} setData={updateIngestionData}></Dropdown>
+                    <Dropdown type='data_type' defaultValue='Type of Data' options={['Ais', 'Weather']} data={ingestionData} setData={updateIngestionData}></Dropdown>
                 </Col>
             </Row>
             <Row className="box">

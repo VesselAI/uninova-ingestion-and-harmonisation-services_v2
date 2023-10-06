@@ -12,7 +12,7 @@ const IngestionDataProvider = ({ children }) => {
         params: {},
         data_type: "",
         mapping_schema: "",
-        output_db_type: "mongo"
+        output_db_type: "mongo",
     })
 
     const [params, setParams] = useState({});

@@ -38,9 +38,9 @@ def dfMapping(harmonization_schema, mapping_schema, df):
     return df
 
 def get_harmo_schema(data_type):
-    if data_type == 'weather':
+    if data_type == 'Weather':
         f = open(path + "/schemas/weather_harmonization_schema.json")    
-    elif data_type == 'ais':
+    elif data_type == 'Ais':
         f = open(path + "/schemas/ais_harmonization_schema.json")
     elif data_type == 'noon_reports':
         f = open(path + "/schemas/noon_reports_harmonization_schema.json")

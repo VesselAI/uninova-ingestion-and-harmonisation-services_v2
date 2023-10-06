@@ -23,9 +23,15 @@ function DatabaseForm({}) {
     }
 
     const handleClick = () => {
+
+        const updatedParams = {
+            ...databaseForm,
+            db_table: "unipi_ais_2019"
+        }
+
         const updatedIngestionData = {
             ...ingestionData,
-            params: databaseForm
+            params: updatedParams
         };
 
         updateIngestionData(updatedIngestionData);
@@ -70,7 +76,7 @@ function DatabaseForm({}) {
                         <InputGroup.Text id="table" className="input-group-text-size">
                             Table
                         </InputGroup.Text>
-                        <Form.Control name="db_table" type="text" aria-label="Select table" onChange={handleChange}/>
+                        <Form.Control name="dbtable" type="text" aria-label="Select table" onChange={handleChange}/>
                     </InputGroup>
                 </Col>
             </Row>

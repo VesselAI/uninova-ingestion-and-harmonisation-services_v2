@@ -13,12 +13,14 @@ function HarmonizationPage() {
 
     const [status, setStatus] = useState('loading');
 
-    const {ingestionData} = useContext(DataContext);
+    const {ingestionData, updateIngestionData} = useContext(DataContext);
 
 
     useEffect( () => {
         // Code here will run on the first render of the component
         const initIngestion = async () => {
+            console.log(ingestionData);
+            
             const res = await ingestBatchData(ingestionData);
             console.log(res);
             setStatus('done')

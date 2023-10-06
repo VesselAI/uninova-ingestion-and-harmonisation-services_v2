@@ -13,7 +13,7 @@ import ast
 def ingestBatchTask(spark, type, data_type, params, mapping_schema_file):
     # TODO: Use Spark read to ingest different types of data
     if type != '':
-        if type == 'database':
+        if type == 'Database':
             provider = params['provider']
             harmo_schema = get_harmo_schema(data_type)
             mapping_schema = get_mapping_schema(mapping_schema_file)
@@ -24,7 +24,7 @@ def ingestBatchTask(spark, type, data_type, params, mapping_schema_file):
             df = dfMapping(harmo_schema, mapping_schema, df)
             df = harmonizationTask(df, spark, harmo_schema)
             return df
-        elif type == 'webservice':
+        elif type == 'Webservice':
             api_url = params['url']
             header = {}
             if params['data_type'] == "json":
@@ -48,7 +48,7 @@ def ingestBatchTask(spark, type, data_type, params, mapping_schema_file):
             #Harmonize (type and unit)
            
            
-        elif type == 'file':
+        elif type == 'File':
             file_type = params['file_type']
             file_path = params['file_path']
             provider = params['provider']

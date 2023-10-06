@@ -47,6 +47,7 @@ services:
     volumes:
       - ./mongo/initdb.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
   postgres:
+    container_name: postgres-db
     image: postgres:12.0
     environment:
       POSTGRES_USER: postgres

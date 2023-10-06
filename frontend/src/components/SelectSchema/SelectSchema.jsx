@@ -67,12 +67,12 @@ function SelectSchema() {
     }
 
     const handleSelect = () => {
-        const updatedIngestionData = {
-            ...ingestionData,
-            ['mapping_schema']: mapSchemaName,
-        };
+        // const updatedIngestionData = {
+        //     ...ingestionData,
+        //     ['mapping_schema']: mapSchemaName,
+        // };
 
-        updateIngestionData(updatedIngestionData);
+        // updateIngestionData(updatedIngestionData);
         console.log(ingestionData);
         navigate("/harmonization", { replace: true });
     }
