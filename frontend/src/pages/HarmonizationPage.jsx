@@ -7,6 +7,7 @@ import ProfileMenu from '../components/ProfileMenu/ProfileMenu';
 import SideBar from '../components/SideBar/SideBar';
 import { ingestBatchData } from '../utils/Backend';
 import DataContext from '../context/IngestionDataProvider';
+import { FaCheck } from 'react-icons/fa';
 import './HarmonizationPage.css'
 
 function HarmonizationPage() {
@@ -22,7 +23,6 @@ function HarmonizationPage() {
             console.log(ingestionData);
             
             const res = await ingestBatchData(ingestionData);
-            console.log(res);
             setStatus('done')
         }
         initIngestion();
@@ -46,7 +46,7 @@ function HarmonizationPage() {
                         {status === 'loading' ?
                             <Spinner className='custom-spinner'/>
                         :
-                            <p className='loading-text'>Done</p>
+                            <FaCheck className='custom-done'></FaCheck>
                         }
                     </Row>
                 </Col>

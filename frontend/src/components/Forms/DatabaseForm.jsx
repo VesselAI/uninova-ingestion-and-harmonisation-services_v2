@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useContext } from 'react';
 import DataContext from '../../context/IngestionDataProvider';
 
-function DatabaseForm({}) {
+function DatabaseForm({ }) {
 
     const { ingestionData, updateIngestionData } = useContext(DataContext);
     const [databaseForm, setDatabaseForm] = useState({});
@@ -46,7 +46,7 @@ function DatabaseForm({}) {
                         <InputGroup.Text id="provider" className="input-group-text-size">
                             Provider
                         </InputGroup.Text>
-                        <Form.Control name="provider" type="text" aria-label="Select provider" onChange={handleChange}/>
+                        <Form.Control name="provider" type="text" aria-label="Select provider" onChange={handleChange} />
                     </InputGroup>
                 </Col>
             </Row>
@@ -54,9 +54,9 @@ function DatabaseForm({}) {
                 <Col className="col-conn-type">
                     <InputGroup>
                         <InputGroup.Text id="url" className="input-group-text-size">URL</InputGroup.Text>
-                        <Form.Control name="url" type="text" aria-label="Input url" onChange={handleChange}/>
+                        <Form.Control name="url" type="text" aria-label="Input url" onChange={handleChange} />
                         <InputGroup.Text>Port</InputGroup.Text>
-                        <Form.Control name="port" type="text" aria-label="Input port" onChange={handleChange}/>
+                        <Form.Control name="port" type="text" aria-label="Input port" onChange={handleChange} />
                     </InputGroup>
                 </Col>
             </Row>
@@ -66,7 +66,7 @@ function DatabaseForm({}) {
                         <InputGroup.Text id="database" className="input-group-text-size">
                             Database
                         </InputGroup.Text>
-                        <Form.Control name="db" type="text" aria-label="Select database" onChange={handleChange}/>
+                        <Form.Control name="db" type="text" aria-label="Select database" onChange={handleChange} />
                     </InputGroup>
                 </Col>
             </Row>
@@ -76,7 +76,7 @@ function DatabaseForm({}) {
                         <InputGroup.Text id="table" className="input-group-text-size">
                             Table
                         </InputGroup.Text>
-                        <Form.Control name="dbtable" type="text" aria-label="Select table" onChange={handleChange}/>
+                        <Form.Control name="dbtable" type="text" aria-label="Select table" onChange={handleChange} />
                     </InputGroup>
                 </Col>
             </Row>
@@ -86,7 +86,7 @@ function DatabaseForm({}) {
                         <InputGroup.Text id="username" className="input-group-text-size">
                             Username
                         </InputGroup.Text>
-                        <Form.Control name="user" type="text" aria-label="Input username" autoComplete="off" onChange={handleChange}/>
+                        <Form.Control name="user" type="text" aria-label="Input username" autoComplete="off" onChange={handleChange} />
                     </InputGroup>
                 </Col>
             </Row>
@@ -96,7 +96,7 @@ function DatabaseForm({}) {
                         <InputGroup.Text id="secret" className="input-group-text-size">
                             Password
                         </InputGroup.Text>
-                        <Form.Control name="password" type="password" aria-label="Input password" autoComplete="new-password" onChange={handleChange}/>
+                        <Form.Control name="password" type="password" aria-label="Input password" autoComplete="new-password" onChange={handleChange} />
                     </InputGroup>
                 </Col>
             </Row>
@@ -106,7 +106,13 @@ function DatabaseForm({}) {
                         <InputGroup.Text id="driver" className="input-group-text-size">
                             Driver
                         </InputGroup.Text>
-                        <Form.Control name="driver" type="text" aria-label="Select driver" onChange={handleChange}/>
+                        {/* <Form.Control name="driver" type="text" aria-label="Select driver" onChange={handleChange} /> */}
+                        <Form.Select onChange={handleChange} name="driver" aria-label="Default select example">
+                            <option>Open this select menu</option>
+                            <option value="org.postgresql.Driver">Postgres SQL</option>
+                            <option value="2">MySQL</option>
+                            <option value="3">Monetdb</option>
+                        </Form.Select>
                     </InputGroup>
                 </Col>
             </Row>

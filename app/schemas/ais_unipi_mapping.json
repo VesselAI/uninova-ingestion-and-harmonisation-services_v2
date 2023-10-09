@@ -4,12 +4,12 @@
     "is_list": "false",
     "schema":{
         "provider" : {"type" : "string","path": "Provider"},
-        "datetime" : {"type" : "timestamp", "format" : "yyyy-MM-dd HH:mm:ss",  "path": "datetime"},
-        "ship_id" : {"type" : "integer", "path": "ship_id"},
+        "datetime" : {"type" : "timestamp", "format" : "timestamp with time zone",  "path": "t"},
+        "ship_id" : {"type" : "integer", "path": "vessel_id"},
         "lon" : {"type" : "double", "path": "lon"},
         "lat" : {"type" : "double", "path": "lat"},
         "heading" : {"type" : "integer", "unit" : "degrees", "path": "heading"},
-        "sog" : {"type" : "integer", "unit" : "knots", "path": "sog"},
-        "cog" : {"type" : "integer", "unit" : "degrees", "path": "cog"}
+        "sog" : {"type" : "integer", "unit" : "knots", "path": "speed"},
+        "cog" : {"type" : "integer", "unit" : "degrees", "path": "course"}
     }
 }

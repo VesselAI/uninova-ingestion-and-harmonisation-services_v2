@@ -11,6 +11,12 @@
     color: #008DD2;
 }
 
+.custom-done{
+    width: 300px !important;
+    height: 300px !important;
+    color: green;
+}
+
 .loading-text{
     text-align: center;
 }

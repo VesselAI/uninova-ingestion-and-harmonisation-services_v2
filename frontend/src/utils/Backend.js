@@ -6,7 +6,7 @@ const ingestBatchData = async (data) => {
         body: JSON.stringify(data),
         headers: { 'Content-type': 'application/json'},
     });
-    return await response.json();
+    return await response;
 }
 
 const ingestStreamData = async (data) => {

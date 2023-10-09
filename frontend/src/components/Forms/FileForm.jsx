@@ -42,9 +42,14 @@ function FileForm({ }) {
 
     const handleSubmit = async () => {
 
+        const updatedParams = {
+            ...fileForm,
+            db_table: "ais_data"
+        }
+
         const updatedIngestionData = {
             ...ingestionData,
-            params: fileForm
+            params: updatedParams,
         };
 
         updateIngestionData(updatedIngestionData);
