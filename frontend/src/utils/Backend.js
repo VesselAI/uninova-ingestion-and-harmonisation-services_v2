@@ -32,11 +32,20 @@ const getMappingSchemaList = async () => {
     return response.json();
 }
 
+const getNLPSchema = async (data) => {
+    const response = await fetch("http://localhost:5002/get_nlp_schema", {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-type': 'application/json'},
+    });
+    return await response.json();
+}
+
 const testeApi = async () => {
     const response = await fetch("http://localhost:5002/teste_nuclear");
     return await response.text();
 }
 
 
-export {testeApi, ingestBatchData, ingestStreamData, updateMappingSchemaList, getMappingSchemaList }
+export {testeApi, ingestBatchData, ingestStreamData, updateMappingSchemaList, getMappingSchemaList, getNLPSchema }
 

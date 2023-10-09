@@ -1,8 +1,14 @@
 import Form from 'react-bootstrap/Form';
-function DropdownSimple ({ list }) {
+function DropdownSimple ({ list, setData }) {
 
     const handleChange = () => {
-        console.log('hello');
+        // const elementToAdd = event.target.value;
+        // const updatedList = [
+        //     ...list.slice(0, index - 1),
+        //     elementToAdd,
+        //     ...list.slice(index + 1)
+        // ];
+        // setData(updatedList)
     }
 
     return(

@@ -8,8 +8,10 @@ from utils.conversion_utils import castType
 from utils.general_utils import startCronJob, removeAllCronjob
 import json, os
 from functions.storage import storeToJDBC, storeToMongo , sendToKafka
+from functions.nlpSchemaCreaction import nlpSchemaCreation
 from configparser import ConfigParser
 import subprocess
+import pandas as pd
 import pymonetdb
 import pymongo
 
@@ -96,6 +98,7 @@ def get_mapping_schema_list():
     if os.environ.get('HARMONIZATION_MONGO_USER'): __mongo_user = os.environ.get('HARMONIZATION_MONGO_USER')
     if os.environ.get('HARMONIZATION_MONGO_PASS'): __mongo_pass = os.environ.get('HARMONIZATION_MONGO_PASS')
 
+
     myclient = pymongo.MongoClient("mongodb://" + __mongo_user + ":" + __mongo_pass + "@" + __mongo_host + ":" + __mongo_port + "/?authSource=admin&readPreference=primary&ssl=false" )
     mydb = myclient[__mongo_db]
     mycol = mydb["mapping_schema_list"]
@@ -107,6 +110,30 @@ def get_mapping_schema_list():
     data = json.dumps(data)
     print(data)
     return data
+
+
+@app.route("/get_nlp_schema", methods=["POST"])
+def get_nlp_schema():
+
+    if request.is_json:
+        data = request.get_json()
+
+    if 'data_type' in data:
+        data_type = data['data_type']
+        print(data_type)
+    if 'type' in data:
+        type = data['type']
+        print(type)
+    if 'params' in data:
+        params = data['params']
+        print(params)
+
+    spark = initSpark()
+
+    results = nlpSchemaCreation(spark, type, data_type, params)
+    
+    return results
+
 
 @app.route("/update_config", methods=["POST"])
 def update_config():
