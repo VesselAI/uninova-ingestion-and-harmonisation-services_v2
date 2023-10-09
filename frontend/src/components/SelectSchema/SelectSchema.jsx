@@ -13,12 +13,7 @@ import DropdownMapping from '../Dropdowns/DropdownMapping';
 import DataContext from '../../context/IngestionDataProvider';
 import { useNavigate } from "react-router-dom";
 import './SelectSchema.css'
-import { updateMappingSchemaList, getMappingSchemaList } from '../../utils/Backend';
-
-// import FileForm from '../Forms/FileForm';
-// import DatabaseForm from '../Forms/DatabaseForm';
-// import WebserviceForm from '../Forms/WebserviceForm';
-// import './Workspace.css'
+import { updateMappingSchemaList, getMappingSchemaList, getNLPSchema } from '../../utils/Backend';
 
 function SelectSchema() {
 
@@ -26,18 +21,25 @@ function SelectSchema() {
 
     const [params, setParams] = useState({});
     const [button, setButton] = useState(false);
-    const [dataSchema, setDataSchema] = useState(['A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C']);
-    const [nlpSchema, setNlpSchema] = useState(['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c']);
+    const [dataSchema, setDataSchema] = useState([]);
+    const [nlpSchema, setNlpSchema] = useState([]);
     const [mapSchemaName, setMapSchemaName] = useState('');
     const [mapSchemaType, setMapSchemaType] = useState('');
     const [mapSchemaList, setMapSchemaList] = useState([]);
+    const [nlpResult, setNlpResult] = useState([]);
     const navigate = useNavigate();
 
 
     useEffect(() => {
         fetchData();
+        getMappingSchema();
         // TODO: Get raw and NLP harmonized schemas
     }, [])
+
+    useEffect(() => {
+        console.log(nlpResult);
+        updateSchemas();
+    }, [nlpResult])
 
     useEffect(() => {
         console.log(mapSchemaType);
@@ -46,6 +48,23 @@ function SelectSchema() {
     async function fetchData () {
         const list = await getMappingSchemaList();
         setMapSchemaList(list);
+    }
+
+    async function getMappingSchema () {
+        const results = await getNLPSchema(ingestionData);
+        console.log(results);
+        setNlpResult(results);
+    }
+
+    function updateSchemas () {
+        const updatedDataSchema = nlpResult.map((i) => i[0]);
+        console.log(updatedDataSchema);
+        
+        const updatedNlpSchema = nlpResult.map((i) => i[1]);
+        console.log(updatedNlpSchema);
+
+        setDataSchema(updatedDataSchema);
+        setNlpSchema(updatedNlpSchema);
     }
 
     const handleClick = () => {
@@ -109,7 +128,7 @@ function SelectSchema() {
                             <ListItems list={dataSchema} /> 
                         </Col>
                         <Col className='col2' >
-                            <DropdownSimple list={nlpSchema} />
+                            <DropdownSimple list={nlpSchema} setData = {setNlpSchema} />
                         </Col> 
                     </Row>
 
