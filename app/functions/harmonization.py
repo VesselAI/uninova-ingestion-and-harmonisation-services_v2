@@ -30,11 +30,13 @@ def dfMapping(harmonization_schema, mapping_schema, df):
         if not col in mapping_schema['schema'].keys():
             df = df.drop(col)
     print('harmonization------------')
-    print(df.head(1))
+    df = df.fillna(value="NULL")
+    print(df.show(1))
     print(df.printSchema())
     df = castType(harmonization_schema, mapping_schema, df)
+    #print("post cast type \n" + df.show(1))
     print("CAST TYPE DONE")
-    print(df.head(1))
+    #print(df.head(1))
     return df
 
 def get_harmo_schema(data_type):

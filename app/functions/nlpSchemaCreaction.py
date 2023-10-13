@@ -148,8 +148,9 @@ def nlpSchemaCreation(spark, type, data_type, params):
             df = spark.createDataFrame(df_pandas)
 
     columns = df.columns
+    columns = [(str(i).strip()) for i in columns]
     print(columns)
-
+    
     # Pre-process raw schema word list
     list1 = [(str(i).lower()) for i in columns]
     list1 = [(str(i).replace('_', ' ')) for i in list1]

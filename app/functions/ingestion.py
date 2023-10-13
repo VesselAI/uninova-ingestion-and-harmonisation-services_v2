@@ -67,10 +67,8 @@ def ingestBatchTask(spark, type, data_type, params, mapping_schema_file):
                 # Maps the columns to the harmonized dataframe columns
                 df = dfMapping(harmo_schema, mapping_schema, df)
                 print(df)
-                print(df.head(2))
                 df = harmonizationTask(df, spark, harmo_schema)
                 print(df)
-                print(df.head(2))
             elif file_type == 'json':
                 df = spark.read.json(file_path)
                 df = dfMapping(harmo_schema, mapping_schema, df)

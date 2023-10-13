@@ -1,23 +1,19 @@
 import Form from 'react-bootstrap/Form';
-function DropdownSimple ({ list, setData }) {
-
-    const handleChange = () => {
-        // const elementToAdd = event.target.value;
-        // const updatedList = [
-        //     ...list.slice(0, index - 1),
-        //     elementToAdd,
-        //     ...list.slice(index + 1)
-        // ];
-        // setData(updatedList)
-    }
+function DropdownSimple ({ list, dropdownList, setData }) {
 
     return(
         <Form>
             {list.map((v, i) => {
                 return(
-                    <Form.Select className="dropdown-list" key={i} onChange={handleChange} aria-label="Default select example">
+                    <Form.Select className="dropdown-list" key={i} onChange={(event) => {
+                        const updatedList = [...list.slice(0, i),
+                            event.target.value,
+                            ...list.slice(i + 1)
+                        ];
+                        setData(updatedList)}
+                    } aria-label="Default select example">
                         <option hidden>{v}</option>
-                        {list.map((value, index) => {
+                        {dropdownList.map((value, index) => {
                             return(
                                 <option key={index} value={value}>{value}</option>
                             )

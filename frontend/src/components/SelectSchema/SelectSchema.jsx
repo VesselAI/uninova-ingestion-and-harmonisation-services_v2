@@ -13,7 +13,7 @@ import DropdownMapping from '../Dropdowns/DropdownMapping';
 import DataContext from '../../context/IngestionDataProvider';
 import { useNavigate } from "react-router-dom";
 import './SelectSchema.css'
-import { updateMappingSchemaList, getMappingSchemaList, getNLPSchema } from '../../utils/Backend';
+import { updateMappingSchemaList, getMappingSchemaList, getNLPSchema, getHarmoSchema, saveMappingSchema } from '../../utils/Backend';
 
 function SelectSchema() {
 
@@ -27,13 +27,14 @@ function SelectSchema() {
     const [mapSchemaType, setMapSchemaType] = useState('');
     const [mapSchemaList, setMapSchemaList] = useState([]);
     const [nlpResult, setNlpResult] = useState([]);
+    const [harmoList, setHarmoList] = useState([]);
     const navigate = useNavigate();
 
 
     useEffect(() => {
         fetchData();
         getMappingSchema();
-        // TODO: Get raw and NLP harmonized schemas
+        getHarmonizationSchema();
     }, [])
 
     useEffect(() => {
@@ -42,8 +43,9 @@ function SelectSchema() {
     }, [nlpResult])
 
     useEffect(() => {
-        console.log(mapSchemaType);
-    }, [mapSchemaType])
+        console.log(nlpSchema);
+    }, [nlpSchema])
+
 
     async function fetchData () {
         const list = await getMappingSchemaList();
@@ -54,6 +56,12 @@ function SelectSchema() {
         const results = await getNLPSchema(ingestionData);
         console.log(results);
         setNlpResult(results);
+    }
+
+    async function getHarmonizationSchema () {
+        const results = await getHarmoSchema(ingestionData);
+        console.log(results);
+        setHarmoList(results);
     }
 
     function updateSchemas () {
@@ -72,26 +80,21 @@ function SelectSchema() {
     }
 
     const handleSubmit = () => {
-        // TODO: Save Mapping Schema
-
+        const data = {'mapSchemaName':mapSchemaName, 'schemaType': mapSchemaType, 'type': ingestionData.type, 'raw': dataSchema, 'harmonized':nlpSchema};
+        saveMappingSchema(data);
         const updatedSchemaList = [...mapSchemaList, mapSchemaName];
         setMapSchemaList(updatedSchemaList);
         updateMappingSchemaList({'schema_type': mapSchemaType, 'mapping_schema_name': mapSchemaName});
 
         setButton(false);
     }
+
     const handleChange = (event) => {
         console.log(event.target.value);
         setMapSchemaName(event.target.value);
     }
 
     const handleSelect = () => {
-        // const updatedIngestionData = {
-        //     ...ingestionData,
-        //     ['mapping_schema']: mapSchemaName,
-        // };
-
-        // updateIngestionData(updatedIngestionData);
         console.log(ingestionData);
         navigate("/harmonization", { replace: true });
     }
@@ -128,7 +131,7 @@ function SelectSchema() {
                             <ListItems list={dataSchema} /> 
                         </Col>
                         <Col className='col2' >
-                            <DropdownSimple list={nlpSchema} setData = {setNlpSchema} />
+                            <DropdownSimple list={nlpSchema} dropdownList = {harmoList} setData = {setNlpSchema} />
                         </Col> 
                     </Row>
 

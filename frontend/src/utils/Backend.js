@@ -41,11 +41,29 @@ const getNLPSchema = async (data) => {
     return await response.json();
 }
 
+const getHarmoSchema = async (data) => {
+    const response = await fetch("http://localhost:5002/get_harmonization_schema", {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-type': 'application/json'},
+    });
+    return response.json();
+}
+
+const saveMappingSchema = async (data) => {
+    const response = await fetch("http://localhost:5002/save_mapping_schema", {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-type': 'application/json'},
+    });
+    return response;
+}
+
 const testeApi = async () => {
     const response = await fetch("http://localhost:5002/teste_nuclear");
     return await response.text();
 }
 
 
-export {testeApi, ingestBatchData, ingestStreamData, updateMappingSchemaList, getMappingSchemaList, getNLPSchema }
+export {testeApi, ingestBatchData, ingestStreamData, updateMappingSchemaList, getMappingSchemaList, getNLPSchema, getHarmoSchema, saveMappingSchema }
 

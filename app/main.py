@@ -9,11 +9,13 @@ from utils.general_utils import startCronJob, removeAllCronjob
 import json, os
 from functions.storage import storeToJDBC, storeToMongo , sendToKafka
 from functions.nlpSchemaCreaction import nlpSchemaCreation
+from functions.createMappingSchema import createMappingSchema
 from configparser import ConfigParser
 import subprocess
 import pandas as pd
 import pymonetdb
 import pymongo
+import pathlib
 
 app = createApp()
 
@@ -131,6 +133,44 @@ def get_nlp_schema():
     spark = initSpark()
 
     results = nlpSchemaCreation(spark, type, data_type, params)
+    
+    return results
+
+@app.route("/save_mapping_schema", methods=["POST"])
+def save_mapping_schema():
+
+    if request.is_json:
+        data = request.get_json()
+    if not 'schemaType' in data:
+        return make_response('Error: Missing "Data Type" parameter', 404)
+    if not 'mapSchemaName' in data:
+        return make_response('Error: Missing "mapSchemaName" parameter', 404)
+    if not 'raw' in data or not 'harmonized' in data:
+        return make_response('Error: Data fields incomplete or non-existant', 404)
+    
+    createMappingSchema(data)
+
+    return make_response('Success', 200)
+
+@app.route("/get_harmonization_schema", methods=["POST"])
+def get_harmonization_schema():
+
+    if request.is_json:
+        data = request.get_json()
+
+    if 'data_type' in data:
+        data_type = data['data_type']
+        print(data_type)
+
+    path = pathlib.Path().resolve()
+    path = str(path)   
+
+    f = open(path + "/schemas/" + str(data_type).lower() + "_harmonization_schema.json")
+    harmonization_schema = json.load(f)
+
+    results = list(harmonization_schema.keys())
+
+    print(results)
     
     return results
 

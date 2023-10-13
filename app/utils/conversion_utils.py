@@ -20,7 +20,6 @@ def castType(harmonization_schema, mapping_schema, df):
                         df = df.withColumn(key, to_timestamp(col(key), mapping_schema['schema'][key]['format']))
                 elif harmonization_schema[key]['type']=="double":
                     df = df.withColumn(key, col(key).cast('double'))
-
     
     return df
 

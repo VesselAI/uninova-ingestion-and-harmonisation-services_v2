@@ -19,18 +19,19 @@ function HarmonizationPage() {
 
     useEffect( () => {
         // Code here will run on the first render of the component
-        const initIngestion = async () => {
-            console.log(ingestionData);
-            
-            const res = await ingestBatchData(ingestionData);
-            setStatus('done')
-        }
         initIngestion();
         // Cleanup function (optional) - it will run when the component unmounts
         return () => {
             // Cleanup code here (if needed)
         };
     }, []); // Empty dependency array means this effect runs once
+
+    const initIngestion = async () => {
+        console.log(ingestionData);
+        
+        const res = await ingestBatchData(ingestionData);
+        setStatus('done');
+    }
 
     return (
         <Container fluid>
