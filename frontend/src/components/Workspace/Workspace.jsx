@@ -5,6 +5,7 @@ import Dropdown from "../Dropdowns/Dropdown";
 import FileForm from '../Forms/FileForm';
 import DatabaseForm from '../Forms/DatabaseForm';
 import WebserviceForm from '../Forms/WebserviceForm';
+import ClipboardForm from '../Forms/ClipboardForm';
 import { useContext } from 'react';
 import DataContext from '../../context/IngestionDataProvider';
 import './Workspace.css'
@@ -21,7 +22,7 @@ function Workspace() {
                     Select Data Type
                 </Col>
                 <Col>
-                    <Dropdown type='data_type' defaultValue='Type of Data' options={['Ais', 'Weather']} data={ingestionData} setData={updateIngestionData}></Dropdown>
+                    <Dropdown type='data_type' defaultValue='Type of Data' options={['Ais', 'Weather', 'Noon Reports']} data={ingestionData} setData={updateIngestionData}></Dropdown>
                 </Col>
             </Row>
             <Row className="box">
@@ -29,7 +30,12 @@ function Workspace() {
                     Select Connection
                 </Col>
                 <Col>
-                    <Dropdown type='type' defaultValue='Connection option' options={['File', 'Database', 'Webservice']} data={ingestionData} setData={updateIngestionData} setParams={updateParams}></Dropdown>
+                    {/* {ingestionData.data_type !== 'Noon Reports' &&
+                        <Dropdown type='type' defaultValue='Connection option' options={['File', 'Database', 'Webservice']} data={ingestionData} setData={updateIngestionData} setParams={updateParams}></Dropdown>
+                    } */}
+                    {/* {ingestionData.data_type === 'Noon Reports' && */}
+                    <Dropdown type='type' defaultValue='Connection option' options={['File', 'Database', 'Webservice', 'Copy to Clipboard']} data={ingestionData} setData={updateIngestionData} setParams={updateParams}></Dropdown>
+                    {/* } */}
                 </Col>
             </Row>
             <Row>
@@ -41,6 +47,9 @@ function Workspace() {
                 )}
                 {ingestionData.type === 'Webservice' && (
                     <WebserviceForm />
+                )}
+                {ingestionData.type === 'Copy to Clipboard' && (
+                    <ClipboardForm />
                 )}
             </Row>
         </Container>

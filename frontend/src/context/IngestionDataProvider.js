@@ -25,12 +25,26 @@ const IngestionDataProvider = ({ children }) => {
         setParams(updatedParams);
     }
 
+    const clearIngestionData = () => {
+        const updatedIngestionData  = {
+            name: "",
+            task: "",
+            type: "",
+            params: {},
+            data_type: "",
+            mapping_schema: "",
+            output_db_type: "mongo",
+        };
+        setParams(updatedIngestionData);
+    }
+
     const value = useMemo(
         () => ({
             ingestionData,
             updateIngestionData,
             params,
-            updateParams
+            updateParams,
+            clearIngestionData
         }),
         [ingestionData]
     );

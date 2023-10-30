@@ -44,7 +44,7 @@ function FileForm({ }) {
 
         const updatedParams = {
             ...fileForm,
-            db_table: "ais_data"
+            db_table: String(ingestionData.data_type).toLowerCase().split(' ').join('_') + "_data_" + String(fileForm.provider).toLowerCase().split(' ').join('_')
         }
 
         const updatedIngestionData = {

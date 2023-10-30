@@ -108,8 +108,14 @@
 }
 
 .dropdown-list{
-    margin-top: 3px;
-    margin-bottom: 3px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    max-height: 40.8px;
+}
+
+.dropdown-list-row{
+    min-height: 40.8px;
+    max-height: 40.8px;
 }
 
 .col1 {

@@ -33,7 +33,6 @@ function SelectSchema() {
 
     useEffect(() => {
         fetchData();
-        getMappingSchema();
         getHarmonizationSchema();
     }, [])
 
@@ -77,6 +76,7 @@ function SelectSchema() {
 
     const handleClick = () => {
         setButton(!button);
+        getMappingSchema();
     }
 
     const handleSubmit = () => {

@@ -26,7 +26,7 @@ function DatabaseForm({ }) {
 
         const updatedParams = {
             ...databaseForm,
-            db_table: "unipi_ais_2019"
+            db_table: String(ingestionData.data_type).toLowerCase().split(' ').join('_') + "_data_" + String(databaseForm.provider).toLowerCase().split(' ').join('_')
         }
 
         const updatedIngestionData = {

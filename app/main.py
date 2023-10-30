@@ -16,6 +16,9 @@ import pandas as pd
 import pymonetdb
 import pymongo
 import pathlib
+import re
+from pyspark import SparkContext
+
 
 app = createApp()
 
@@ -165,7 +168,7 @@ def get_harmonization_schema():
     path = pathlib.Path().resolve()
     path = str(path)   
 
-    f = open(path + "/schemas/" + str(data_type).lower() + "_harmonization_schema.json")
+    f = open(path + "/schemas/" + str(data_type).replace(' ', '_').lower() + "_harmonization_schema.json")
     harmonization_schema = json.load(f)
 
     results = list(harmonization_schema.keys())
@@ -174,6 +177,45 @@ def get_harmonization_schema():
     
     return results
 
+@app.route("/save_clipboard_to_mongo", methods=["POST"])
+def save_clipboard_to_mongo():
+    
+    spark = initSpark()
+    sc = spark.sparkContext
+
+    if request.is_json:
+        req = request.get_json()
+    
+    if 'data' in req:
+        data = req['data']
+    if 'db_table_temp' in req:
+        db_table_temp = req['db_table_temp']
+    
+    print('data: ' + str(data))
+    data_type = type(data)
+    print('type: ' + str(data_type))
+
+    data_list = data.split('\n')
+    print('data_list:')
+    print(data_list)
+    df_dict = {}
+
+    for i in data_list:
+        kvPair = re.split(':|-', i, 1)
+        # df1 = pd.DataFrame({kvPair[0]: kvPair[1]}, index=[0])
+        # df = pd.concat([df, df1], axis=1)
+        df_dict[kvPair[0].strip()] = kvPair[1].strip()
+        
+    df = spark.read.json(sc.parallelize([df_dict]))
+
+    print(df.head())
+    storeToMongo(df, db_table_temp)
+
+    return make_response('Success', 200)
+
+
+    
+    
 
 @app.route("/update_config", methods=["POST"])
 def update_config():

@@ -3,6 +3,7 @@ from collections import Counter
 from math import sqrt
 import json, math, re
 import pathlib
+import pymongo
 
 WORD = re.compile(r"\w+")
 path = pathlib.Path().resolve()
@@ -134,19 +135,33 @@ def findSimilarWord(columns, harmonized_list, list1, harmonized_list_clean, simi
 
 def nlpSchemaCreation(spark, type, data_type, params):
 
-    if 'delimiter' in params:
-        delimiter = params['delimiter']
-    if 'file_path' in params:
-        file_path = params['file_path']
-    if 'file_type' in params:
-        file_type = params['file_type']
     if type == 'File':
+        if 'delimiter' in params:
+            delimiter = params['delimiter']
+        if 'file_path' in params:
+            file_path = params['file_path']
+        if 'file_type' in params:
+            file_type = params['file_type']
+
         if file_type == 'csv':
             df = spark.read.options(delimiter=delimiter, header=True).csv(file_path)
         elif file_type == 'excel':
             df_pandas = pd.read_excel(file_path, header=True)
             df = spark.createDataFrame(df_pandas)
+    
+    if type == 'Copy to Clipboard':
+        if 'db_table' in params:
+            db_table = params['db_table']
 
+        df = spark.read \
+                .format("mongo") \
+                .option("spark.mongodb.input.uri", "mongodb://uninova:grisgris123@mongo:27017/?authSource=admin&readPreference=primary&ssl=false") \
+                .option("spark.mongodb.input.database", 'vesselai-harmonization') \
+                .option("spark.mongodb.input.collection", db_table) \
+                .load()
+        if '_id' in df.columns:
+            df = df.drop('_id')
+            
     columns = df.columns
     columns = [(str(i).strip()) for i in columns]
     print(columns)
@@ -155,7 +170,7 @@ def nlpSchemaCreation(spark, type, data_type, params):
     list1 = [(str(i).lower()) for i in columns]
     list1 = [(str(i).replace('_', ' ')) for i in list1]
 
-    f = open(path + '/schemas/' + str(data_type).lower() + '_harmonization_schema.json')
+    f = open(path + '/schemas/' + str(data_type).replace(' ', '_').lower() + '_harmonization_schema.json')
     harmonized_schema = json.load(f)
 
     harmonized_list = []
@@ -168,7 +183,7 @@ def nlpSchemaCreation(spark, type, data_type, params):
 
 
     ndigits  = 3
-    similarity_threshold = 0.51
+    similarity_threshold = 0.45
 
     results_list = findSimilarWord(columns, harmonized_list, list1, harmonized_list_clean, similarity_threshold, ndigits)
 

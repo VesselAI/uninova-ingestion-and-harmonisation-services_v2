@@ -59,11 +59,20 @@ const saveMappingSchema = async (data) => {
     return response;
 }
 
+const saveClipboardToMongo = async (data) => {
+    const response = await fetch("http://localhost:5002/save_clipboard_to_mongo", {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {'Content-type': 'application/json'},
+    });
+    return response;
+}
+
 const testeApi = async () => {
     const response = await fetch("http://localhost:5002/teste_nuclear");
     return await response.text();
 }
 
 
-export {testeApi, ingestBatchData, ingestStreamData, updateMappingSchemaList, getMappingSchemaList, getNLPSchema, getHarmoSchema, saveMappingSchema }
+export {testeApi, ingestBatchData, ingestStreamData, updateMappingSchemaList, getMappingSchemaList, getNLPSchema, getHarmoSchema, saveMappingSchema, saveClipboardToMongo }
 
