@@ -1,7 +1,7 @@
 # - *- coding: utf- 8 - *-
 from crypt import methods
 from __init__ import createApp
-from flask import make_response, request
+from flask import make_response, request, jsonify
 from functions.ingestion import ingestBatchTask, ingestStreamTask
 from utils.spark_utils import initSpark
 from utils.conversion_utils import castType
@@ -38,6 +38,7 @@ __mongo_db = ''
 __mongo_user = ''
 __mongo_pass = ''
 
+path = pathlib.Path().resolve()
 
 @app.route("/")
 def index():
@@ -365,13 +366,17 @@ def ingestBatchEndpoint():
 
 @app.route("/data/upload_file", methods=['POST'])
 def upload_file():
-    if request.method == 'POST':
-        f = request.files['file']
-        f.save('/opt/bitnami/spark/files/' + request.form['filename'])
-        
-        return('Success', 200)
+    if 'file' not in request.files:
+        return jsonify({'message': 'No file part'})
+    
+    f = request.files['file']
 
-    return make_response('Error: Bad Request', 404)    
+    if f.filename == '':
+        return jsonify({'message': 'No selected file'})
+
+    f.save(str(path) + '/files/' + f.filename)
+    
+    return jsonify({'message':'File uploaded successfully'})  
 
 @app.route("/data/remove_all_cronjob")
 def remove_all_cronjob():

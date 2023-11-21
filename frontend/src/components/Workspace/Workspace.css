@@ -36,6 +36,10 @@
     margin: 10px;
 }
 
+.box-upload-file {
+    margin-left: 16.666667%;
+}
+
 .box-item {
     align-items: center;
 }
@@ -52,3 +56,34 @@
     width: 130px;
 }
 
+.text-center {
+    width: 100%;
+    position: relative;
+    height: 100%;
+}
+
+.spinner-border-workspace {
+    display: block;
+    position: fixed;
+    top: calc(50% - (58px / 2));  
+    right: calc(50% - (58px / 2));
+    color: #008DD2;
+}
+
+.file-upload {
+    width: 80%;
+}
+
+.button-file-upload {
+    float: right;
+    align-items: center;
+}
+
+#backdrop {
+  position:absolute;
+  top:0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  background-color: rgb(0,0,0,0.2);
+}

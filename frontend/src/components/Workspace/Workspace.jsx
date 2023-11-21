@@ -1,4 +1,5 @@
 import Container from 'react-bootstrap/Container';
+import Spinner from 'react-bootstrap/Spinner';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Dropdown from "../Dropdowns/Dropdown";
@@ -6,13 +7,14 @@ import FileForm from '../Forms/FileForm';
 import DatabaseForm from '../Forms/DatabaseForm';
 import WebserviceForm from '../Forms/WebserviceForm';
 import ClipboardForm from '../Forms/ClipboardForm';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import DataContext from '../../context/IngestionDataProvider';
 import './Workspace.css'
 
 function Workspace() {
 
     const {ingestionData, updateIngestionData, params, updateParams} = useContext(DataContext);
+    const [loading, setLoading] = useState(false);
 
     return (
         <Container>
@@ -40,7 +42,7 @@ function Workspace() {
             </Row>
             <Row>
                 {ingestionData.type === 'File' && (
-                    <FileForm/>
+                    <FileForm setLoading={ setLoading } />
                 )}
                 {ingestionData.type === 'Database' && (
                     <DatabaseForm />
@@ -49,9 +51,16 @@ function Workspace() {
                     <WebserviceForm />
                 )}
                 {ingestionData.type === 'Copy to Clipboard' && (
-                    <ClipboardForm />
+                    <ClipboardForm setLoading={ setLoading } />
                 )}
             </Row>
+            {loading === true && (
+                <Row id="backdrop">
+                    <Row class="text-center">
+                        <Spinner className="spinner-border-workspace" role="status-clipboard" />
+                    </Row>
+                </Row>
+            )}
         </Container>
     );
 }

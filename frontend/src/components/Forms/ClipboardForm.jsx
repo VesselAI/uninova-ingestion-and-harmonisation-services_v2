@@ -12,7 +12,7 @@ import DataContext from '../../context/IngestionDataProvider';
 
 
 
-function ClipboardForm () {
+function ClipboardForm ({ setLoading }) {
 
     const { ingestionData, updateIngestionData } = useContext(DataContext);
     const [data, setData] = useState();
@@ -34,27 +34,31 @@ function ClipboardForm () {
         setClipboardForm(updatedClipboardForm)
     }
 
-    const handleClick = () =>{
+    const handleClick = async () =>{
         console.log(data);
         const tableName = (clipboardForm.dataset_name).split(' ').join('_')
         const tableTempName = (clipboardForm.dataset_name).split(' ').join('_') + '_temp'
+        
         // TODO: Call API endpoint to send data to mongo as a dataframe
-        saveClipboardToMongo({'db_table_temp': tableTempName, 'data': data});
+        setLoading(true);
+        const result = await saveClipboardToMongo({'db_table_temp': tableTempName, 'data': data});
+        console.log(result);
         // TODO: Set mongo table with the data in the params entry of the ingestionData object
         const updatedParams = {
             ...clipboardForm,
             db_table: tableName,
             db_table_temp: tableTempName
         };
-
+        
         const updatedIngestionData = {
             ...ingestionData,
             params: updatedParams
         };
-
+        
         updateIngestionData(updatedIngestionData);
         console.log(ingestionData);
-
+        
+        setLoading(false);
         navigate("/schema_selection", { replace: true });
     }
 

@@ -63,14 +63,12 @@ def ingestBatchTask(spark, type, data_type, params, mapping_schema_file):
 
             if file_type == 'csv':
                 df = spark.read.options(delimiter=delimiter, header=True).csv(file_path)
-                df = df.withColumn('Provider',lit(provider))
+                # df = df.withColumn('Provider',lit(provider))
                 # Clear spaces from column names
                 df = clearSpaceFirstChar(df)
                 # Maps the columns to the harmonized dataframe columns
                 df = dfMapping(harmo_schema, mapping_schema, df)
-                print(df)
                 df = harmonizationTask(df, spark, harmo_schema)
-                print(df)
             elif file_type == 'json':
                 df = spark.read.json(file_path)
                 df = dfMapping(harmo_schema, mapping_schema, df)

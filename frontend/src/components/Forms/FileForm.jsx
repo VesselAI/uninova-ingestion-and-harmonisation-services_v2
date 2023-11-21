@@ -8,13 +8,15 @@ import { useNavigate } from "react-router-dom";
 import DataContext from '../../context/IngestionDataProvider';
 import { testeApi } from '../../utils/Backend';
 import "../Workspace/Workspace.css"
+import { uploadFile } from '../../utils/Backend';
 
 
-function FileForm({ }) {
+function FileForm({ setLoading }) {
 
     const { ingestionData, updateIngestionData } = useContext(DataContext);
     const [fileForm, setFileForm] = useState({});
     const navigate = useNavigate();
+    const [file, setFile] = useState(null);
 
     useEffect(() => {
         // Code here will run on the first render of the component
@@ -32,12 +34,23 @@ function FileForm({ }) {
         };
     }, []); // Empty dependency array means this effect runs once
 
+    useEffect(() => {
+        if (file != null){
+            const updatedFileForm = {
+                ...fileForm,
+                file_path: './files/' + String(file.name)
+            }
+            setFileForm(updatedFileForm);
+            console.log(fileForm);
+        }
+    }, [file])
+
     const handleChange = (event) => {
         const updatedFileForm = {
             ...fileForm,
             [event.target.name]: event.target.value
         }
-        setFileForm(updatedFileForm)
+        setFileForm(updatedFileForm);
     }
 
     const handleSubmit = async () => {
@@ -47,14 +60,34 @@ function FileForm({ }) {
             db_table: String(ingestionData.data_type).toLowerCase().split(' ').join('_') + "_data_" + String(fileForm.provider).toLowerCase().split(' ').join('_')
         }
 
+        
+        setLoading(true);
+        if (file) {
+            const formData = new FormData();
+            console.log(file.name);
+            console.log(file);
+            formData.append('file', file);
+            console.log(formData.get('file'));
+            await uploadFile(formData);
+        } else {
+            console.error('No file selected for upload.');
+        }
+        
         const updatedIngestionData = {
             ...ingestionData,
             params: updatedParams,
         };
 
         updateIngestionData(updatedIngestionData);
+
+        setLoading(false);
         navigate("/schema_selection", { replace: true });
     }
+
+
+    const handleFileChange = (event) => {
+      setFile(event.target.files[0]);
+    };
 
     return (
         <Form onSubmit={handleSubmit} className="form-size">
@@ -90,14 +123,18 @@ function FileForm({ }) {
                 </Form.Group>
             </Row>
             <Row className="box">
-                <Form.Group as={Col} className="col-conn-type">
+                <Col className="box-upload-file" >
+                    <input className="file-upload" type="file" name='file' accept=".json, .csv" onChange={handleFileChange} />
+                </Col>
+                {/* <Form.Group as={Col} className="col
+                -conn-type">
                     <InputGroup>
                         <InputGroup.Text id="file-path" className="input-group-text-size">
                             File Path
                         </InputGroup.Text>
                         <Form.Control name="file_path" type="text" aria-label="Select delimiter" onChange={handleChange} />
                     </InputGroup>
-                </Form.Group>
+                </Form.Group> */}
             </Row>
             <Button className="button-placement" variant="outline-primary" onClick={handleSubmit}>Next</Button>
         </Form>

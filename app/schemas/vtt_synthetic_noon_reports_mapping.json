@@ -1,34 +1,77 @@
 {
-    "data_type": "noon_report",
-    "type": "file",
-    "is_list": "false",
-    "schema":{
-		"provider" : {"type" : "string","path": "Provider", "value": "VTT"},
-		"vessel_name" : {"type" : "string", "path": "Vessel"},
-		"imo" : {"type": "int", "path": "IMO"},
-		"gmt_time" : {"type": "timestamp", "format" : "dd/MM/yyyy HH:mm:ss", "path": "GMT time"},
-		"localtime": {"type": "timestamp", "format" : "dd/MM/yyyy HH:mm:ss", "path": "Local time"},
-		"departure_port" : {"type": "string", "path": "Departure Port"},
-		"destination_port" : {"type": "string", "path": "Destination Port"},
-		"hours_reported" : {"type": "double", "unit": "hours", "path": "Hours reported"},
-		"distance_sailed" : {"type": "double", "unit": "nautical_miles", "path": "Distance sailed NM"},
-		"distance_sailed_to_berth" : {"type": "double", "unit": "nautical_miles", "path": "Distance sailed to berth NM"},
-		"distance_sailed_from_berth" : {"type": "double", "unit": "nautical_miles", "path": "Distance sailed from berth NM"},
-		"draught_aft" : {"type": "double", "unit": "meters", "path": "Draught aft m"},
-		"draught_fore" : {"type": "double", "unit": "meters", "path": "Draught fore m"},
-		"sog" : {"type": "double", "unit": "knots", "path": "Average speed over ground knots"},
-		"speed_through_water" : {"type": "double", "unit": "knots", "path": "Average speed through water knots"},
-		"high_temperature_cooling_water_temperature" : {"type": "double", "unit": "degrees_C", "path": "HT cooling water temp C"},
-		"avg_main_engine_output" : {"type": "double", "unit": "kW", "path": "ME average shaft power kW"},
-		"avg_main_engine_load" : {"type": "double", "unit": "percentage", "path": "ME average load %"},
-		"diesel_engine1_avg_power" : {"type": "double", "unit": "percentage", "path": "DG1 average power kW"},
-		"diesel_engine2_avg_power" : {"type": "double", "unit": "percentage", "path": "DG2 average power kW"},
-		"diesel_engine3_avg_power" : {"type": "double", "unit": "percentage", "path": "DG3 average power kW"},
-		"diesel_engine4_avg_power" : {"type": "double", "unit": "percentage", "path": "DG4 average power kW"},
-		"diesel_engine5_avg_power" : {"type": "double", "unit": "percentage", "path": "DG5 average power kW"},
-		"main_engine_fuel_consumption" : {"type": "double", "unit": "kg/kWh", "path": "ME fuel oil consumption kg"},
-		"aux_engine_fuel_consumption" : {"type": "double", "unit": "kg/kWh", "path": "AE fuel oil consumption kg"},
-		"heavy_fuel_consumption" : {"type": "double", "unit": "kg/kWh", "path": "HFO consumption kg"},
-		"marine_diesel_consumption" : {"type": "double", "unit": "kg/kWh", "path": "MDO consumption kg"}
-	}
+      "data_type": "noon_reports",
+      "is_list": "false",
+      "schema": {
+            "vessel_name": {
+                  "type": "string",
+                  "path": "Vessel"
+            },
+            "imo": {
+                  "type": "int",
+                  "path": "IMO"
+            },
+            "gmt_time": {
+                  "type": "timestamp",
+                  "format": "yyyy-MM-dd HH:mm:ss",
+                  "path": "GMT time"
+            },
+            "datetime": {
+                  "type": "timestamp",
+                  "format": "yyyy-MM-dd HH:mm:ss",
+                  "path": "Local time"
+            },
+            "departure_port": {
+                  "type": "string",
+                  "path": "Departure port"
+            },
+            "destination_port": {
+                  "type": "string",
+                  "path": "Destination port"
+            },
+            "voyage_time": {
+                  "type": "double",
+                  "path": "Hours reported"
+            },
+            "distance_sailed": {
+                  "type": "double",
+                  "path": "Distance sailed NM"
+            },
+            "distance_sailed_to_berth": {
+                  "type": "double",
+                  "path": "Distance sailed to berth NM"
+            },
+            "distance_sailed_from_berth": {
+                  "type": "double",
+                  "path": "Distance sailed from berth NM"
+            },
+            "draft_aft": {
+                  "type": "double",
+                  "path": "Draught aft m"
+            },
+            "draft_fore": {
+                  "type": "double",
+                  "path": "Draught fore m"
+            },
+            "speed_over_ground": {
+                  "type": "int",
+                  "path": "Average speed over ground knots"
+            },
+            "speed_over_water": {
+                  "type": "int",
+                  "path": "Average speed through water knots"
+            },
+            "cylinder_oil_consumption": {
+                  "type": "int",
+                  "path": "ME fuel oil consumption kg"
+            },
+            "hsfo_consumed": {
+                  "type": "int",
+                  "path": "HFO consumption kg"
+            },
+            "mgo_consumed": {
+                  "type": "int",
+                  "path": "MDO consumption kg"
+            }
+      },
+      "type": "file"
 }

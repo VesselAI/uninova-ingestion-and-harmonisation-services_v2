@@ -6,7 +6,7 @@ const ingestBatchData = async (data) => {
         body: JSON.stringify(data),
         headers: { 'Content-type': 'application/json'},
     });
-    return await response;
+    return response;
 }
 
 const ingestStreamData = async (data) => {
@@ -15,7 +15,7 @@ const ingestStreamData = async (data) => {
         body: JSON.stringify(data),
         headers: { 'Content-type': 'application/json'},
     });
-    return await response.json();
+    return response.json();
 }
 
 const updateMappingSchemaList = async (data) => {
@@ -73,6 +73,20 @@ const testeApi = async () => {
     return await response.text();
 }
 
+const uploadFile = async (formData) => {
+    const response = await fetch("http://localhost:5002/data/upload_file", {
+        method: 'POST',
+        body: formData
+    })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+}
 
-export {testeApi, ingestBatchData, ingestStreamData, updateMappingSchemaList, getMappingSchemaList, getNLPSchema, getHarmoSchema, saveMappingSchema, saveClipboardToMongo }
+
+export {testeApi, ingestBatchData, ingestStreamData, updateMappingSchemaList, getMappingSchemaList, getNLPSchema, getHarmoSchema, saveMappingSchema, saveClipboardToMongo, uploadFile }
 

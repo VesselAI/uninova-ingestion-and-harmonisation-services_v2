@@ -66,19 +66,19 @@ services:
      - 3000:3000
     volumes:
       - ./frontend/src:/frontend/src
-  # monetdb:
-  #   image: monetdb/vessel_ai:latest
-  #   ports: 
-  #   - "50000:50000"
-  #   environment:
-  #     DB_NAME: vesselai
-  #     DB_USER: uninova
-  #     DB_PASSWORD: grisgris123
-  #   volumes:
-  #     - database_storage:/var/monetdb5/dbfarm
-  #     - type: bind
-  #       source: ./monetdb
-  #       target: /initdbd
+  monetdb:
+    image: monetdb/vessel_ai:latest
+    ports: 
+    - "50000:50000"
+    environment:
+      DB_NAME: vesselai
+      DB_USER: uninova
+      DB_PASSWORD: weakpassword!
+    volumes:
+      - database_storage:/var/monetdb5/dbfarm
+      - type: bind
+        source: ./monetdb
+        target: /initdbd
   app:
     build: ./app
     environment:

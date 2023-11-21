@@ -65,7 +65,7 @@ db.mapping_schema_list.insertMany([
     {
         schema_type: "noon_reports",
         mapping_schema_name: "vtt_synthetic_noon_reports_mapping"
-    },
+    }
 ]);
 
 
