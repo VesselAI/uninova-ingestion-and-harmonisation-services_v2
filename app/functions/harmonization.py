@@ -30,19 +30,22 @@ def dfMapping(harmonization_schema, mapping_schema, df):
         if not col in mapping_schema['schema'].keys():
             df = df.drop(col)
     print('harmonization------------')
-    print(df.head(1))
+    df = df.fillna(value="NULL")
+    print(df.show(1))
     print(df.printSchema())
     df = castType(harmonization_schema, mapping_schema, df)
+    #print("post cast type \n" + df.show(1))
     print("CAST TYPE DONE")
-    print(df.head(1))
+    #print(df.head(1))
     return df
 
 def get_harmo_schema(data_type):
-    if data_type == 'weather':
+    print('data type: ' + str(data_type))
+    if data_type == 'Weather':
         f = open(path + "/schemas/weather_harmonization_schema.json")    
-    elif data_type == 'ais':
+    elif data_type == 'Ais':
         f = open(path + "/schemas/ais_harmonization_schema.json")
-    elif data_type == 'noon_reports':
+    elif data_type == 'Noon Reports':
         f = open(path + "/schemas/noon_reports_harmonization_schema.json")
         
     harmonization_schema = json.load(f)

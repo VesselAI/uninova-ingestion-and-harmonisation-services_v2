@@ -1,0 +1,145 @@
+{
+      "data_type": "noon_reports",
+      "is_list": "false",
+      "schema": {
+            "vessel_name": {
+                  "type": "string",
+                  "path": "Ship Name"
+            },
+            "imo": {
+                  "type": "int",
+                  "path": "IMO number"
+            },
+            "ship_type": {
+                  "type": "string",
+                  "path": "Report Type"
+            },
+            "gmt_time": {
+                  "type": "timestamp",
+                  "format": "yyyy-MM-dd HH:mm:ss",
+                  "path": "Time Zone (GMT+/-)"
+            },
+            "voyage_number": {
+                  "type": "string",
+                  "path": "Voyage"
+            },
+            "distance_sailed_from_berth": {
+                  "type": "double",
+                  "path": "From"
+            },
+            "departure_port": {
+                  "type": "string",
+                  "path": "Next Port"
+            },
+            "eta": {
+                  "type": "timestamp",
+                  "format": "yyyy-MM-dd HH:mm:ss",
+                  "path": "ETA (UTC)"
+            },
+            "lat": {
+                  "type": "double",
+                  "path": "Latitude"
+            },
+            "lon": {
+                  "type": "double",
+                  "path": "Longitude"
+            },
+            "wind_direction": {
+                  "type": "int",
+                  "path": "Wind Direction"
+            },
+            "wind_force": {
+                  "type": "int",
+                  "path": "Wind Scale"
+            },
+            "swell": {
+                  "type": "int",
+                  "path": "Swell"
+            },
+            "draft_fore": {
+                  "type": "double",
+                  "path": "Draught Fore"
+            },
+            "draft_aft": {
+                  "type": "double",
+                  "path": "Draught Aft"
+            },
+            "ballast": {
+                  "type": "int",
+                  "path": "Ballast (M.T.)"
+            },
+            "status": {
+                  "type": "string",
+                  "path": "Status"
+            },
+            "cargo_carried_tons": {
+                  "type": "int",
+                  "path": "Cargo onboard (MT or TEU)"
+            },
+            "distance_sailed": {
+                  "type": "double",
+                  "path": "Distance Sailed (NM)"
+            },
+            "distance_to_next_waypoint": {
+                  "type": "double",
+                  "path": "Distance To Go (NM)"
+            },
+            "water_depth": {
+                  "type": "double",
+                  "path": "Water Depth"
+            },
+            "speed_over_water": {
+                  "type": "int",
+                  "path": "Speed through water"
+            },
+            "propeller_speed": {
+                  "type": "int",
+                  "path": "Propeller ave. speed"
+            },
+            "propeller_rpm": {
+                  "type": "int",
+                  "path": "RPM Ave. (sailing period)"
+            },
+            "slip": {
+                  "type": "int",
+                  "path": "Slip%"
+            },
+            "fuel_consumption_total": {
+                  "type": "int",
+                  "path": "Report Total  Consum. (all fuel types)"
+            },
+            "hsfo_rob": {
+                  "type": "int",
+                  "path": "R.O.B. HSFO"
+            },
+            "lsfo_rob": {
+                  "type": "int",
+                  "path": "R.O.B. LSFO"
+            },
+            "mgo_rob": {
+                  "type": "int",
+                  "path": "R.O.B. MGO"
+            },
+            "cylinder_lube_oil_rob": {
+                  "type": "int",
+                  "path": "R.O.B. M/E Cyl. Oil"
+            },
+            "bunker_hsfo": {
+                  "type": "int",
+                  "path": "Bunkered HSFO"
+            },
+            "bunker_lsfo": {
+                  "type": "int",
+                  "path": "Bunkered LSFO"
+            },
+            "bunker_mgo": {
+                  "type": "int",
+                  "path": "Bunkered MGO"
+            },
+            "remarks": {
+                  "type": "string",
+                  "path": "Remark"
+            }
+      },
+      "type": "file"
+}

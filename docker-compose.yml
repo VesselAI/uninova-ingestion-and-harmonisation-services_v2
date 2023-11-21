@@ -47,6 +47,7 @@ services:
     volumes:
       - ./mongo/initdb.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
   postgres:
+    container_name: postgres-db
     image: postgres:12.0
     environment:
       POSTGRES_USER: postgres
@@ -55,19 +56,29 @@ services:
       - "5434:5432"
     volumes:
       - ./postgres/1_init_vesselai.sql:/docker-entrypoint-initdb.d/1_init_vesselai.sql
-  # monetdb:
-  #   image: monetdb/vessel_ai:latest
-  #   ports: 
-  #   - "50000:50000"
-  #   environment:
-  #     DB_NAME: vesselai
-  #     DB_USER: uninova
-  #     DB_PASSWORD: grisgris123
-  #   volumes:
-  #     - database_storage:/var/monetdb5/dbfarm
-  #     - type: bind
-  #       source: ./monetdb
-  #       target: /initdb
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    environment:
+      - CHOKIDAR_USERPOLLING=true
+      - WATCHPACK_POLLING=true
+    ports:
+     - 3000:3000
+    volumes:
+      - ./frontend/src:/frontend/src
+  monetdb:
+    image: monetdb/vessel_ai:latest
+    ports: 
+    - "50000:50000"
+    environment:
+      DB_NAME: vesselai
+      DB_USER: uninova
+      DB_PASSWORD: weakpassword!
+    volumes:
+      - database_storage:/var/monetdb5/dbfarm
+      - type: bind
+        source: ./monetdb
+        target: /initdbd
   app:
     build: ./app
     environment:

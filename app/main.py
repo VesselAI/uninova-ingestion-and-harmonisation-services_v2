@@ -1,20 +1,28 @@
 # - *- coding: utf- 8 - *-
 from crypt import methods
 from __init__ import createApp
-from flask import make_response, request
+from flask import make_response, request, jsonify
 from functions.ingestion import ingestBatchTask, ingestStreamTask
 from utils.spark_utils import initSpark
 from utils.conversion_utils import castType
 from utils.general_utils import startCronJob, removeAllCronjob
 import json, os
 from functions.storage import storeToJDBC, storeToMongo , sendToKafka
+from functions.nlpSchemaCreaction import nlpSchemaCreation
+from functions.createMappingSchema import createMappingSchema
 from configparser import ConfigParser
 import subprocess
+import pandas as pd
 import pymonetdb
+import pymongo
+import pathlib
+import re
+from pyspark import SparkContext
+
 
 app = createApp()
 
-##JDBC database config
+##JDBC/MONGO database config
 ## Default variables
 __db_type = "jdbc"
 __jdbc_url = 'monetdb://127.0.0.1'
@@ -24,6 +32,13 @@ __jdbc_user = 'uninova'
 __jdbc_pass = 'grisgris123'
 __jdbc_driver = 'org.monetdb.jdbc.MonetDriver'
 
+__mongo_host = ''
+__mongo_port = ''
+__mongo_db = ''
+__mongo_user = ''
+__mongo_pass = ''
+
+path = pathlib.Path().resolve()
 
 @app.route("/")
 def index():
@@ -36,6 +51,172 @@ def teste_nuclear():
     version = subprocess.check_output(['java', '-version'], stderr=subprocess.STDOUT)
     return version
 
+@app.route("/save_to_mapping_schema_list", methods=["POST"])
+def save_to_mapping_schema_list():
+    config_object = ConfigParser()
+    with open('config.ini', 'r', encoding='utf-8') as f:
+        config_object.readfp(f)
+    ## If key exists in config and it's not empty, uses config file params
+    if "JDBCCONFIG" in config_object:
+        if config_object.items("MONGOCONFIG") != None:
+            __mongo_host = config_object.get("MONGOCONFIG", "mongo_host")
+            __mongo_port = config_object.get("MONGOCONFIG", "mongo_port")
+            __mongo_db = config_object.get("MONGOCONFIG", "mongo_db")
+            __mongo_user = config_object.get("MONGOCONFIG", "mongo_user")
+            __mongo_pass = config_object.get("MONGOCONFIG", "mongo_pass")
+
+    ## If there are environment variables defined for the paramenters, use envvars instead
+    if os.environ.get('HARMONIZATION_MONGO_HOST'): __mongo_host = os.environ.get('HARMONIZATION_MONGO_HOST')
+    if os.environ.get('HARMONIZATION_MONGO_PORT'): __mongo_port = os.environ.get('HARMONIZATION_MONGO_PORT')
+    if os.environ.get('HARMONIZATION_MONGO_DB'): __mongo_db = os.environ.get('HARMONIZATION_MONGO_DB')
+    if os.environ.get('HARMONIZATION_MONGO_USER'): __mongo_user = os.environ.get('HARMONIZATION_MONGO_USER')
+    if os.environ.get('HARMONIZATION_MONGO_PASS'): __mongo_pass = os.environ.get('HARMONIZATION_MONGO_PASS')
+
+    
+    if request.is_json:
+        data = request.get_json()
+    print(data)
+    myclient = pymongo.MongoClient("mongodb://" + __mongo_user + ":" + __mongo_pass + "@" + __mongo_host + ":" + __mongo_port + "/?authSource=admin&readPreference=primary&ssl=false" )
+    mydb = myclient[__mongo_db]
+    mycol = mydb["mapping_schema_list"]
+    mycol.insert_one({'schema_type':data['schema_type'], 'mapping_schema_name': data['mapping_schema_name']})
+
+    return "Success"
+
+@app.route("/get_mapping_schema_list", methods=["GET"])
+def get_mapping_schema_list():
+    config_object = ConfigParser()
+    with open('config.ini', 'r', encoding='utf-8') as f:
+        config_object.readfp(f)
+    ## If key exists in config and it's not empty, uses config file params
+    if "JDBCCONFIG" in config_object:
+        if config_object.items("MONGOCONFIG") != None:
+            __mongo_host = config_object.get("MONGOCONFIG", "mongo_host")
+            __mongo_port = config_object.get("MONGOCONFIG", "mongo_port")
+            __mongo_db = config_object.get("MONGOCONFIG", "mongo_db")
+            __mongo_user = config_object.get("MONGOCONFIG", "mongo_user")
+            __mongo_pass = config_object.get("MONGOCONFIG", "mongo_pass")
+
+    ## If there are environment variables defined for the paramenters, use envvars instead
+    if os.environ.get('HARMONIZATION_MONGO_HOST'): __mongo_host = os.environ.get('HARMONIZATION_MONGO_HOST')
+    if os.environ.get('HARMONIZATION_MONGO_PORT'): __mongo_port = os.environ.get('HARMONIZATION_MONGO_PORT')
+    if os.environ.get('HARMONIZATION_MONGO_DB'): __mongo_db = os.environ.get('HARMONIZATION_MONGO_DB')
+    if os.environ.get('HARMONIZATION_MONGO_USER'): __mongo_user = os.environ.get('HARMONIZATION_MONGO_USER')
+    if os.environ.get('HARMONIZATION_MONGO_PASS'): __mongo_pass = os.environ.get('HARMONIZATION_MONGO_PASS')
+
+
+    myclient = pymongo.MongoClient("mongodb://" + __mongo_user + ":" + __mongo_pass + "@" + __mongo_host + ":" + __mongo_port + "/?authSource=admin&readPreference=primary&ssl=false" )
+    mydb = myclient[__mongo_db]
+    mycol = mydb["mapping_schema_list"]
+    cursor = mycol.find({})
+    data = []
+    for document in cursor:
+        document = document.pop('mapping_schema_name')
+        data.append(document)
+    data = json.dumps(data)
+    print(data)
+    return data
+
+
+@app.route("/get_nlp_schema", methods=["POST"])
+def get_nlp_schema():
+
+    if request.is_json:
+        data = request.get_json()
+
+    if 'data_type' in data:
+        data_type = data['data_type']
+        print(data_type)
+    if 'type' in data:
+        type = data['type']
+        print(type)
+    if 'params' in data:
+        params = data['params']
+        print(params)
+
+    spark = initSpark()
+
+    results = nlpSchemaCreation(spark, type, data_type, params)
+    
+    return results
+
+@app.route("/save_mapping_schema", methods=["POST"])
+def save_mapping_schema():
+
+    if request.is_json:
+        data = request.get_json()
+    if not 'schemaType' in data:
+        return make_response('Error: Missing "Data Type" parameter', 404)
+    if not 'mapSchemaName' in data:
+        return make_response('Error: Missing "mapSchemaName" parameter', 404)
+    if not 'raw' in data or not 'harmonized' in data:
+        return make_response('Error: Data fields incomplete or non-existant', 404)
+    
+    createMappingSchema(data)
+
+    return make_response('Success', 200)
+
+@app.route("/get_harmonization_schema", methods=["POST"])
+def get_harmonization_schema():
+
+    if request.is_json:
+        data = request.get_json()
+
+    if 'data_type' in data:
+        data_type = data['data_type']
+        print(data_type)
+
+    path = pathlib.Path().resolve()
+    path = str(path)   
+
+    f = open(path + "/schemas/" + str(data_type).replace(' ', '_').lower() + "_harmonization_schema.json")
+    harmonization_schema = json.load(f)
+
+    results = list(harmonization_schema.keys())
+
+    print(results)
+    
+    return results
+
+@app.route("/save_clipboard_to_mongo", methods=["POST"])
+def save_clipboard_to_mongo():
+    
+    spark = initSpark()
+    sc = spark.sparkContext
+
+    if request.is_json:
+        req = request.get_json()
+    
+    if 'data' in req:
+        data = req['data']
+    if 'db_table_temp' in req:
+        db_table_temp = req['db_table_temp']
+    
+    print('data: ' + str(data))
+    data_type = type(data)
+    print('type: ' + str(data_type))
+
+    data_list = data.split('\n')
+    print('data_list:')
+    print(data_list)
+    df_dict = {}
+
+    for i in data_list:
+        kvPair = re.split(':|-', i, 1)
+        # df1 = pd.DataFrame({kvPair[0]: kvPair[1]}, index=[0])
+        # df = pd.concat([df, df1], axis=1)
+        df_dict[kvPair[0].strip()] = kvPair[1].strip()
+        
+    df = spark.read.json(sc.parallelize([df_dict]))
+
+    print(df.head())
+    storeToMongo(df, db_table_temp)
+
+    return make_response('Success', 200)
+
+
+    
+    
 
 @app.route("/update_config", methods=["POST"])
 def update_config():
@@ -185,13 +366,17 @@ def ingestBatchEndpoint():
 
 @app.route("/data/upload_file", methods=['POST'])
 def upload_file():
-    if request.method == 'POST':
-        f = request.files['file']
-        f.save('/opt/bitnami/spark/files/' + request.form['filename'])
-        
-        return('Success', 200)
+    if 'file' not in request.files:
+        return jsonify({'message': 'No file part'})
+    
+    f = request.files['file']
 
-    return make_response('Error: Bad Request', 404)    
+    if f.filename == '':
+        return jsonify({'message': 'No selected file'})
+
+    f.save(str(path) + '/files/' + f.filename)
+    
+    return jsonify({'message':'File uploaded successfully'})  
 
 @app.route("/data/remove_all_cronjob")
 def remove_all_cronjob():

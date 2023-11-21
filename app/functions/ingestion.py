@@ -6,14 +6,16 @@ from pyspark.sql.functions import col,lit
 from utils.general_utils import clearSpaces, cleanNullValues, replaceNaN, clearSpaceFirstChar
 from functions.harmonization import dfMapping, harmonizationTask, get_mapping_schema, preProcessJSON, get_harmo_schema
 from utils.conversion_utils import convertUnits
+import pymongo
 from pyspark import SparkFiles, SparkContext
 from kafka import KafkaConsumer, TopicPartition, KafkaProducer
 import ast
+import pandas as pd
 
 def ingestBatchTask(spark, type, data_type, params, mapping_schema_file):
     # TODO: Use Spark read to ingest different types of data
     if type != '':
-        if type == 'database':
+        if type == 'Database':
             provider = params['provider']
             harmo_schema = get_harmo_schema(data_type)
             mapping_schema = get_mapping_schema(mapping_schema_file)
@@ -24,7 +26,7 @@ def ingestBatchTask(spark, type, data_type, params, mapping_schema_file):
             df = dfMapping(harmo_schema, mapping_schema, df)
             df = harmonizationTask(df, spark, harmo_schema)
             return df
-        elif type == 'webservice':
+        elif type == 'Webservice':
             api_url = params['url']
             header = {}
             if params['data_type'] == "json":
@@ -48,7 +50,7 @@ def ingestBatchTask(spark, type, data_type, params, mapping_schema_file):
             #Harmonize (type and unit)
            
            
-        elif type == 'file':
+        elif type == 'File':
             file_type = params['file_type']
             file_path = params['file_path']
             provider = params['provider']
@@ -61,21 +63,38 @@ def ingestBatchTask(spark, type, data_type, params, mapping_schema_file):
 
             if file_type == 'csv':
                 df = spark.read.options(delimiter=delimiter, header=True).csv(file_path)
-                df = df.withColumn('Provider',lit(provider))
+                # df = df.withColumn('Provider',lit(provider))
                 # Clear spaces from column names
                 df = clearSpaceFirstChar(df)
                 # Maps the columns to the harmonized dataframe columns
                 df = dfMapping(harmo_schema, mapping_schema, df)
-                print(df)
-                print(df.head(2))
                 df = harmonizationTask(df, spark, harmo_schema)
-                print(df)
-                print(df.head(2))
             elif file_type == 'json':
                 df = spark.read.json(file_path)
                 df = dfMapping(harmo_schema, mapping_schema, df)
                 df = harmonizationTask(df, spark, harmo_schema)
 
+            return df
+        if type == 'Copy to Clipboard':
+            provider = params['provider']
+            harmo_schema = get_harmo_schema(data_type)
+            mapping_schema = get_mapping_schema(mapping_schema_file)
+            # TODO: Fetch table from mongoDB to ingest
+            if 'db_table' in params:
+                db_table_temp = params['db_table_temp']
+            df = spark.read \
+                    .format("mongo") \
+                    .option("spark.mongodb.input.uri", "mongodb://uninova:grisgris123@mongo:27017/?authSource=admin&readPreference=primary&ssl=false") \
+                    .option("spark.mongodb.input.database", 'vesselai-harmonization') \
+                    .option("spark.mongodb.input.collection", db_table_temp) \
+                    .load()
+            if '_id' in df.columns:
+                df = df.drop('_id')
+            # df = cleanNullValues(df)
+            df = replaceNaN(df)
+            df = df.withColumn('Provider',lit(provider))
+            df = dfMapping(harmo_schema, mapping_schema, df)
+            df = harmonizationTask(df, spark, harmo_schema)
             return df
     return None
 

@@ -1,7 +1,11 @@
-Flask==2.0
+Flask==2.2.2
+Werkzeug==2.2.2
 flask_restful==0.3.9
 pyspark==3.2.1
 python_crontab==2.6.0
 requests==2.27.1
 pymonetdb==1.5.1
+Flask-Cors==3.0.10
 kafka-python
+pymongo
+pandas
