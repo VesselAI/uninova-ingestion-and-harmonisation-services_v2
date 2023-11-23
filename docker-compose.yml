@@ -73,7 +73,7 @@ services:
     environment:
       DB_NAME: vesselai
       DB_USER: uninova
-      DB_PASSWORD: temppassword!
+      DB_PASSWORD: weakpassword!
     volumes:
       - database_storage:/var/monetdb5/dbfarm
       - type: bind

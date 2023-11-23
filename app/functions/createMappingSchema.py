@@ -31,15 +31,18 @@ def createMappingSchema(data):
 
     for i in range(len(rawList)):
         entry = harmonizedList[i]
+
         if schemaType == 'ais':
-            if 'datetime' in entry:
-                mapSchemaJson['schema'].update({entry:{'type': 'timestamp', 'format': 'yyyy-MM-dd HH:mm:ss', 'path':rawList[i]}})
-            elif 'lat' in entry or 'lon' in entry or 'length' in entry or 'width' in entry or 'draft' in entry:
-                mapSchemaJson['schema'].update({entry:{'type': 'double', 'path':rawList[i]}})
-            elif 'sog' in entry or 'cog' in entry or 'mmsi' in entry or 'heading' in entry or 'vessel_type' in entry or 'status' in entry or 'cargo' in entry:
-                mapSchemaJson['schema'].update({entry:{'type': 'int', 'path':rawList[i]}})
-            else:
-                mapSchemaJson['schema'].update({entry:{'type': 'string', 'path':rawList[i]}})
+            if entry != '':
+                if 'datetime' in entry:
+                    mapSchemaJson['schema'].update({entry:{'type': 'timestamp', 'format': 'yyyy-MM-dd HH:mm:ss', 'path':rawList[i]}})
+                elif 'lat' in entry or 'lon' in entry or 'length' in entry or 'width' in entry or 'draft' in entry:
+                    mapSchemaJson['schema'].update({entry:{'type': 'double', 'path':rawList[i]}})
+                elif 'sog' in entry or 'cog' in entry or 'mmsi' in entry or 'heading' in entry or 'vessel_type' in entry or 'status' in entry or 'cargo' in entry:
+                    mapSchemaJson['schema'].update({entry:{'type': 'int', 'path':rawList[i]}})
+                else:
+                    mapSchemaJson['schema'].update({entry:{'type': 'string', 'path':rawList[i]}})
+        
         elif schemaType == 'weather':
             if 'datetime' in entry or 'sunrise_time' in entry or 'sunset_time' in entry:
                 mapSchemaJson['schema'].update({entry:{'type': 'timestamp', 'unit':'utc_unix', 'format': 'yyyy-MM-dd HH:mm:ss', 'path':rawList[i]}})
@@ -47,6 +50,7 @@ def createMappingSchema(data):
                 mapSchemaJson['schema'].update({entry:{'type': 'string', 'path':rawList[i]}})
             else:
                 mapSchemaJson['schema'].update({entry:{'type': 'double', 'path':rawList[i]}})
+        
         elif schemaType == 'noon_reports':
             f = open(path + "/schemas/" + harmo_schema_name, 'r')
             harmo_schema = json.load(f)

@@ -78,6 +78,7 @@
     "bunker_dg_lub_oil": {"type" : "int", "min":0, "max":1},
     "rob_dg_lub_oil": {"type" : "int", "min":0, "max":1},
     "dg_lub_oil_consumed": {"type" : "int", "min":0, "max":1},
+    "fuel_oil_consumption": {"type" : "int", "min":0, "max":1},
     "fuel_consumption_total": {"type" : "int", "min":0, "max":1},
     "hsfo_consumed": {"type" : "int", "min":0, "max":1},
     "mgo_consumed": {"type" : "int", "min":0, "max":1},
