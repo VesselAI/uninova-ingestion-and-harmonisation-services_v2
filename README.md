@@ -31,27 +31,46 @@ Note: the default database to store the harmonization is an instance of monetdb 
 --- 
 ## User Interface:
 #### Main Page
+
 ![DIHS Main User Interface](./imgs/MainPage.png)
+
 Upon entering the Data Ingestion and Harmonisation Services Landing Page, the user is presented with two options to select the select the data type of the data to be ingested and harmonised, and the desired connection type, depending on which format the data will be ingested in (File, Database...).
+
 ![Connection types](./imgs/ConnTypes.png)
+
 Once the connection type is selected, new fields will open to configure the connection or, in the case that File is selected, to upload the file and configure the reading options for the file.
+
 ![File Connection](./imgs/FileConn.png)
+
 ![Database Connection](./imgs/DatabaseConn.png)
+
 ![Webservice Connection](./imgs/WebserviceConn.png)
 
 #### Mapping Schema Selection
+
 After the ingestion is configured, the user proceeds to the selection of the mapping schema. 
+
 ![Mapping Schema Page](./imgs/MappingPage.png)
+
 The user can select from a list of pre-existing mapping schemas, as seen in the following picture.
+
 ![Mapping Schema List](./imgs/MappingPage2.png)
+
 However, the user also has the option to create a new mapping schema for the selected dataset. This option opens a list where the raw schema of the dataset is automatically mapped to that of the harmonised schema. This mapping can be edited by the user to change and customise the mapping schema. 
+
 ![Mapping Schema Creation](./imgs/MappingPage3.png)
+
 When the user is happy with the result, and the schema is named and the data type of the schema is attributed, this schema can be saved. Once saved, the schema will appear on the mapping schema list and can now be used to harmonise the data.
+
 #### Harmonisation
 After selecting the mapping schema, the user can press on the button with the right arrow to process to the harmonisation process. While the harmonisation is in progress, the page will show a loading icon.
+
 ![Harmonisation In Progress](./imgs/HarmonizationLoading.png)
+
 Once the harmonisation process ends, a green checkmark will indicate to the user that the process has ended, an a continue button will appear, that takes the user to the main page of the Data Ingestion and Harmonisation Services.
+
 ![Finished Harmonisation](./imgs/HarmonizationDone.png)
+
 ---
 ## Endpoints:
 #### POST /data/update_config
