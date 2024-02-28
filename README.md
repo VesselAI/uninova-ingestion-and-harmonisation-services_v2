@@ -32,9 +32,9 @@ Note: the default database to store the harmonization is an instance of monetdb 
 ## User Interface:
 #### Main Page
 
-![DIHS Main User Interface](./imgs/MainPage.png)
+Upon entering the Data Ingestion and Harmonisation Services Landing Page, the user is presented with two options to select the select the data type (AIS, Weather, Noon Reports) of the data to be ingested and harmonised, and the desired connection type, depending on which format the data will be ingested in (File, Database...).
 
-Upon entering the Data Ingestion and Harmonisation Services Landing Page, the user is presented with two options to select the select the data type of the data to be ingested and harmonised, and the desired connection type, depending on which format the data will be ingested in (File, Database...).
+![DIHS Main User Interface](./imgs/MainPage.png)
 
 ![Connection types](./imgs/ConnTypes.png)
 
