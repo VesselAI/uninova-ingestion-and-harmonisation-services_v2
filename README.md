@@ -52,7 +52,7 @@ After the ingestion is configured, the user proceeds to the selection of the map
 
 ![Mapping Schema Page](./imgs/MappingPage.png)
 
-The user can select from a list of pre-existing mapping schemas, as seen in the following picture.
+The user can select from a list of pre-existing mapping schemas, as seen in the image bellow.
 
 ![Mapping Schema List](./imgs/MappingPage2.png)
 
