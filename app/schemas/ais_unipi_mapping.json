@@ -4,7 +4,7 @@
     "is_list": "false",
     "schema":{
         "provider" : {"type" : "string","path": "Provider"},
-        "datetime" : {"type" : "timestamp", "format" : "yyyy-MM-dd HH:mm:ss",  "path": "t"},
+        "datetime" : {"type" : "utc_unix", "format" : "yyyy-MM-dd HH:mm:ss",  "path": "t"},
         "ship_id" : {"type" : "integer", "path": "vessel_id"},
         "lon" : {"type" : "double", "path": "lon"},
         "lat" : {"type" : "double", "path": "lat"},

@@ -13,8 +13,8 @@ def castType(harmonization_schema, mapping_schema, df):
                     df = df.withColumn(key, col(key).cast('integer'))
                 elif harmonization_schema[key]['type']=="timestamp":
                     if mapping_schema['schema'][key]['type'] == "utc_unix":
-                        df = df.withColumn(key, col(key).cast('integer'))
-                        df = df.withColumn(key, from_unixtime(col(key), mapping_schema['schema'][key]['format']))
+                        df = df.withColumn(key, col(key).cast('long'))
+                        df = df.withColumn(key, from_unixtime((col(key))/1000, mapping_schema['schema'][key]['format']))
                     elif mapping_schema['schema'][key]['type'] == "timestamp":
                         df = df.withColumn(key,regexp_replace(col(key), "T", " "))
                         df = df.withColumn(key, to_timestamp(col(key), mapping_schema['schema'][key]['format']))
